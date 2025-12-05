@@ -34,7 +34,6 @@
 
         public Category() { }
 
-
         public void SetTitle(string title)
         {
             if (string.IsNullOrWhiteSpace(title) || title.Length > 160)

@@ -26,8 +26,6 @@ namespace DevLearning.Models
             Url = $"www.devlearning.com.br/author/{Name.ToLower().Replace(" ", "-")}";
             Email = email;
             Type = AuthorType.Ativo;
-        }
-
-       
+        }       
     }
 }
