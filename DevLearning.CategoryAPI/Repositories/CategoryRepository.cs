@@ -1,9 +1,8 @@
 ﻿using Dapper;
 using DevLearning.CategoryAPI.Repositories.Interfaces;
-using DevLearning.CourseAPI.Repositories;
 using DevLearning.Models;
 using DevLearning.Models.DTOs.Category;
-using DevLearning.StudentAPI.Data;
+using DevLearning.CategoryAPI.DataBase;
 using Microsoft.Data.SqlClient;
 
 namespace DevLearning.CategoryAPI.Repositories
@@ -11,8 +10,6 @@ namespace DevLearning.CategoryAPI.Repositories
     public class CategoryRepository : ICategoryRepository
     {
         private readonly SqlConnection _connection;
-
-        private CourseRepository _courseRepository;
 
         public CategoryRepository(ConnectionDB connection)
         {
