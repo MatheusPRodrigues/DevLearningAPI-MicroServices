@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.StudentAPI.Controllers.v1
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class StudentController : ControllerBase
     {
@@ -30,7 +30,7 @@ namespace DevLearning.StudentAPI.Controllers.v1
             }
         }
 
-        [HttpPost("/api/students/{studentId}/courses/{courseId}")]
+        [HttpPost("{studentId}/courses/{courseId}")]
         public async Task<ActionResult> InsertStudentCourse([FromBody] StudentRequestInsertCourseDTO student, string studentId, string courseId)
         {
             try
@@ -126,7 +126,7 @@ namespace DevLearning.StudentAPI.Controllers.v1
             }
         }
 
-        [HttpPut("/api/students/{studentId}/courses/{courseId}")]
+        [HttpPut("{studentId}/courses/{courseId}")]
         public async Task<ActionResult> UpdateStudentCourse([FromBody] StudentCourseRequestUpdateDTO student, string studentId, string courseId)
         {
             try
