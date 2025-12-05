@@ -1,9 +1,10 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace DevLearning.StudentAPI.Data
+namespace DevLearning.CategoryAPI.DataBase
 {
     public class ConnectionDB
     {
+
         private readonly string _connectionString;
 
         public ConnectionDB(IConfiguration configuration)
@@ -15,6 +16,5 @@ namespace DevLearning.StudentAPI.Data
         {
             return new SqlConnection(_connectionString);
         }
-        
     }
 }
