@@ -18,4 +18,10 @@
     <Folder Include="Controllers\v1\" />
   </ItemGroup>
 
+  <ItemGroup>
+    
+    <ProjectReference Include="..\DevLearning.Models\DevLearning.Models.csproj" />
+    <ProjectReference Include="..\DevLearning.StudentAPI\DevLearning.StudentAPI.csproj" />
+  </ItemGroup>
+
 </Project>
