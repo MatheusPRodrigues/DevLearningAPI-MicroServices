@@ -15,3 +15,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// BRANCH DE TESTE DE INTEGRAÇÃO 2
