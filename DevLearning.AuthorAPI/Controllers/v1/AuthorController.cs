@@ -113,16 +113,16 @@ namespace DevLearning.AuthorAPI.Controllers.v1
             }
         }
 
-        //Listar cursos do autor
-        [HttpGet("{id}/courses")]
-        public async Task<ActionResult> GetAuthorCourses(Guid id)
-        {
-            var result = await _authorService.GetAuthorCoursesAsync(id);
+        ////Listar cursos do autor
+        //[HttpGet("{id}/courses")]
+        //public async Task<ActionResult> GetAuthorCourses(Guid id)
+        //{
+        //    var result = await _authorService.GetAuthorCoursesAsync(id);
 
-            if (result == null)
-                return NotFound("Autor não encontrado.");
+        //    if (result == null)
+        //        return NotFound("Autor não encontrado.");
 
-            return Ok(result);
-        }
+        //    return Ok(result);
+        //}
     }
 }

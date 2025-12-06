@@ -121,12 +121,12 @@ namespace DevLearning.CategoryAPI.Repositories
             });
         }
 
-        public async Task<bool> HasCourseAsync(Guid categoryId)
-        {
-            var sql = "SELECT COUNT(*) FROM Course WHERE CategoryId = @Id";
-            var count = await _connection.ExecuteScalarAsync<int>(sql, new { Id = categoryId });
-            return count > 0;
-        }
+        //public async Task<bool> HasCourseAsync(Guid categoryId)
+        //{
+        //    var sql = "SELECT COUNT(*) FROM Course WHERE CategoryId = @Id";
+        //    var count = await _connection.ExecuteScalarAsync<int>(sql, new { Id = categoryId });
+        //    return count > 0;
+        //}
 
         public async Task DeleteCategoryAsync(Guid id)
         {
@@ -134,25 +134,25 @@ namespace DevLearning.CategoryAPI.Repositories
             await _connection.ExecuteAsync(deleteCategorySql, new { Id = id });
         }
 
-        public async Task<(string CategoryTitle, List<string> Courses)> GetCategoryCoursesAsync(Guid categoryId)
-        {
-            var sql = @"SELECT cat.Title AS CategoryTitle, c.Title AS CourseTitle
-                    FROM Category cat
-                    LEFT JOIN Course c 
-                    ON cat.Id = c.CategoryId
-                    WHERE cat.Id = @CategoryId";
+        //public async Task<(string CategoryTitle, List<string> Courses)> GetCategoryCoursesAsync(Guid categoryId)
+        //{
+        //    var sql = @"SELECT cat.Title AS CategoryTitle, c.Title AS CourseTitle
+        //            FROM Category cat
+        //            LEFT JOIN Course c 
+        //            ON cat.Id = c.CategoryId
+        //            WHERE cat.Id = @CategoryId";
 
-            var rows = await _connection.QueryAsync(sql, new { CategoryId = categoryId });
+        //    var rows = await _connection.QueryAsync(sql, new { CategoryId = categoryId });
 
-            if (!rows.Any())
-                return (null, new List<string>());
+        //    if (!rows.Any())
+        //        return (null, new List<string>());
 
-            string categoryTitle = rows.First().CategoryTitle;
-            var courses = rows.Select(r => (string)r.CourseTitle)
-                                .Where(c => c != null)
-                                .ToList();
+        //    string categoryTitle = rows.First().CategoryTitle;
+        //    var courses = rows.Select(r => (string)r.CourseTitle)
+        //                        .Where(c => c != null)
+        //                        .ToList();
 
-            return (categoryTitle, courses);
-        }
+        //    return (categoryTitle, courses);
+        //}
     }
 }

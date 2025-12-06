@@ -114,15 +114,15 @@ namespace DevLearning.CategoryAPI.Controllers.v1
             }
         }
 
-        [HttpGet("{id}/courses")]
-        public async Task<IActionResult> GetCategoryCourses(Guid id)
-        {
-            var result = await _categoryService.GetCategoryCoursesAsync(id);
+        //[HttpGet("{id}/courses")]
+        //public async Task<IActionResult> GetCategoryCourses(Guid id)
+        //{
+        //    var result = await _categoryService.GetCategoryCoursesAsync(id);
 
-            if (result == null)
-                return NotFound("Categoria não encontrada.");
+        //    if (result == null)
+        //        return NotFound("Categoria não encontrada.");
 
-            return Ok(result);
-        }
+        //    return Ok(result);
+        //}
     }
 }

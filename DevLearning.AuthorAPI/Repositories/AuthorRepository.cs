@@ -203,30 +203,30 @@ namespace DevLearning.AuthorAPI.Repositories
             }
         }
 
-        public async Task<(string AuthorName, List<string> Courses)> GetAuthorCoursesAsync(Guid authorId)
-        {
-            try
-            {
-                var sql = @"
-            SELECT a.Name AS AuthorName, c.Title AS CourseTitle
-            FROM [Author] a
-            LEFT JOIN [Course] c ON a.Id = c.AuthorId
-            WHERE a.Id = @AuthorId";
+      //public async Task<(string AuthorName, List<string> Courses)> GetAuthorCoursesAsync(Guid authorId)
+        //{
+        //    try
+        //    {
+        //        var sql = @"
+        //    SELECT a.Name AS AuthorName, c.Title AS CourseTitle
+        //    FROM [Author] a
+        //    LEFT JOIN [Course] c ON a.Id = c.AuthorId
+        //    WHERE a.Id = @AuthorId";
 
-                var rows = await _connection.QueryAsync(sql, new { AuthorId = authorId });
+        //        var rows = await _connection.QueryAsync(sql, new { AuthorId = authorId });
 
-                if (!rows.Any())
-                    return (null, new List<string>());
+        //        if (!rows.Any())
+        //            return (null, new List<string>());
 
-                string authorName = rows.First().AuthorName;
-                var courses = rows.Select(r => (string)r.CourseTitle).Where(c => c != null).ToList();
+        //        string authorName = rows.First().AuthorName;
+        //        var courses = rows.Select(r => (string)r.CourseTitle).Where(c => c != null).ToList();
 
-                return (authorName, courses);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao listar autores e seus cursos: " + ex.Message);
-            }
-        }
+        //        return (authorName, courses);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Erro ao listar autores e seus cursos: " + ex.Message);
+        //    }
+        //}
     }
 }

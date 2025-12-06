@@ -8,10 +8,26 @@ namespace DevLearning.CategoryAPI.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly HttpClient _httpClient;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(ICategoryRepository categoryRepository, IHttpClientFactory httpClientFactory)
         {
             _categoryRepository = categoryRepository;
+            _httpClient = httpClientFactory.CreateClient("CourseAPI");
+        }
+
+        private async Task<bool> CategoryHasCoursesAsync(Guid categoryId)
+        {
+            var response = await _httpClient.GetAsync($"/api/v1/Course/category/{categoryId}");
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return false;
+
+            if (response.IsSuccessStatusCode)
+                return true;
+
+            response.EnsureSuccessStatusCode();
+            return false;
         }
 
         private string GenerateUrl(string title)
@@ -132,24 +148,24 @@ namespace DevLearning.CategoryAPI.Services
             if (existing == null)
                 throw new KeyNotFoundException("Categoria não encontrada.");
 
-            if (await _categoryRepository.HasCourseAsync(id))
+            if (await CategoryHasCoursesAsync(id))
                 throw new ArgumentException("Não é possível deletar uma categoria que possui cursos associados.");
 
             await _categoryRepository.DeleteCategoryAsync(id);
         }
 
-        public async Task<CategoryWithCoursesDTO> GetCategoryCoursesAsync(Guid categoryId)
-        {
-            var (categoryTitle, courses) = await _categoryRepository.GetCategoryCoursesAsync(categoryId);
+        //public async Task<CategoryWithCoursesDTO> GetCategoryCoursesAsync(Guid categoryId)
+        //{
+        //    var (categoryTitle, courses) = await _categoryRepository.GetCategoryCoursesAsync(categoryId);
 
-            if (categoryTitle == null)
-                return null;
+        //    if (categoryTitle == null)
+        //        return null;
 
-            return new CategoryWithCoursesDTO
-            {
-                CategoryTitle = categoryTitle,
-                Courses = courses
-            };
-        }
+        //    return new CategoryWithCoursesDTO
+        //    {
+        //        CategoryTitle = categoryTitle,
+        //        Courses = courses
+        //    };
+        //}
     }
 }

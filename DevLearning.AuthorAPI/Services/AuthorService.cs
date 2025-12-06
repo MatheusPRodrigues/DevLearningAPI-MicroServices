@@ -11,10 +11,26 @@ namespace DevLearning.AuthorAPI.Services
     public class AuthorService : IAuthorService
     {
         private IAuthorRepository _authorRepository;
+        private readonly HttpClient _courseClient;
 
-        public AuthorService(IAuthorRepository authorRepository)
+        public AuthorService(IAuthorRepository authorRepository, IHttpClientFactory httpClientFactory)
         {
             _authorRepository = authorRepository;
+            _courseClient = httpClientFactory.CreateClient("CourseAPI");
+        }
+
+        private async Task<bool> AuthorHasCoursesAsync(Guid authorId)
+        {
+            var response = await _courseClient.GetAsync($"/api/v1/course/author/{authorId}");
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return false;
+
+            if (response.IsSuccessStatusCode)
+                return true;
+
+            response.EnsureSuccessStatusCode();
+            return false;
         }
 
         public async Task<List<AuthorResponseDTO>> GetAllAuthorsAsync()
@@ -68,26 +84,25 @@ namespace DevLearning.AuthorAPI.Services
             // regra: se inativo (2), precisa verificar cursos
             if (newType == AuthorType.Inativo)
             {
-                var count = await _authorRepository.CountCoursesAsync(id);
-                if (count > 0)
+                if (await AuthorHasCoursesAsync(id))
                     throw new InvalidOperationException("Não é possível inativar o autor pois ele possui cursos.");
             }
 
             await _authorRepository.UpdateAuthorTypeAsync(id, newType);
         }
 
-        public async Task<AuthorWithCoursesDTO> GetAuthorCoursesAsync(Guid authorId)
-        {
-            var (authorName, courses) = await _authorRepository.GetAuthorCoursesAsync(authorId);
+        //public async Task<AuthorWithCoursesDTO> GetAuthorCoursesAsync(Guid authorId)
+        //{
+        //    var (authorName, courses) = await _authorRepository.GetAuthorCoursesAsync(authorId);
 
-            if (authorName == null)
-                return null;
+        //    if (authorName == null)
+        //        return null;
 
-            return new AuthorWithCoursesDTO
-            {
-                AuthorName = authorName,
-                Courses = courses
-            };
-        }
+        //    return new AuthorWithCoursesDTO
+        //    {
+        //        AuthorName = authorName,
+        //        Courses = courses
+        //    };
+        //}
     }
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -20,8 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DevLearning.AuthorAPI\DevLearning.AuthorAPI.csproj" />
-    <ProjectReference Include="..\DevLearning.CategoryAPI\DevLearning.CategoryAPI.csproj" />
     <ProjectReference Include="..\DevLearning.Models\DevLearning.Models.csproj" />
+    <ProjectReference Include="..\DevLearning.CategoryAPI\DevLearning.CategoryAPI.csproj" />
     <ProjectReference Include="..\DevLearning.StudentAPI\DevLearning.StudentAPI.csproj" />
   </ItemGroup>
 

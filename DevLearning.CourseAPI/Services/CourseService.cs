@@ -109,12 +109,12 @@ namespace DevLearning.CourseAPI.Services
                 {
                     throw new Exception("Você não modificar um curso inexistente!");
                 }
-                var verifyStudentCourse = await _studentRepository.GetCountStudentCourse(courseStorage.CourseId);
+                //var verifyStudentCourse = await _studentRepository.GetCountStudentCourse(courseStorage.CourseId);
 
-                if (verifyStudentCourse > 0)
-                {
-                    throw new Exception("Você não pode inativar um curso com alunos nele!");
-                }
+                //if (verifyStudentCourse > 0)
+                //{
+                //    throw new Exception("Você não pode inativar um curso com alunos nele!");
+                //}
 
                 await _courseRepository.UpdateActiveCourseByTitleAsync(title, update.Active, DateTime.UtcNow);
             }

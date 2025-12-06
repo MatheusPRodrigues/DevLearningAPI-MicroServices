@@ -14,6 +14,6 @@ namespace DevLearning.AuthorAPI.Repositories.Interfaces
         Task UpdatePutAuthorAsync(UpdateAuthorFullDTO dto, Guid id);
         Task UpdateAuthorTypeAsync(Guid id, AuthorType type);
         Task<int> CountCoursesAsync(Guid id);
-        Task<(string AuthorName, List<string> Courses)> GetAuthorCoursesAsync(Guid authorId);
+        //Task<(string AuthorName, List<string> Courses)> GetAuthorCoursesAsync(Guid authorId);
     }
 }
