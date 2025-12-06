@@ -8,13 +8,12 @@ namespace DevLearning.StudentAPI.Data
 
         public ConnectionDB(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = configuration.GetConnectionString("SqlConnection");
         }
 
         public SqlConnection GetConnection()
         {
             return new SqlConnection(_connectionString);
         }
-        
     }
 }
