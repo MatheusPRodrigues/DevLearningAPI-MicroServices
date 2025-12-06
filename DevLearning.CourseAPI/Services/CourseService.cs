@@ -6,6 +6,7 @@ using DevLearning.CourseAPI.Services.Interfaces;
 using DevLearning.Models;
 using DevLearning.Models.DTOs.Course;
 using DevLearning.StudentAPI.Repository;
+using MongoDB.Bson;
 
 namespace DevLearning.CourseAPI.Services
 {
@@ -127,12 +128,26 @@ namespace DevLearning.CourseAPI.Services
         {
             try
             {
-                return await _courseRepository.GetOneCourseByIdAsync(Guid.Parse(id));
+                return await _courseRepository.GetOneCourseByIdAsync((id));
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public async Task<List<CourseResponseDTO>> GetCoursesByCategoryAsync(ObjectId categoryId)
+        {
+            if (categoryId == ObjectId.Empty)
+                throw new ArgumentException("ID da categoria inválido");
+            return await _courseRepository.GetCoursesByCategoryAsync(categoryId);
+        }
+
+        public async Task<List<CourseResponseDTO>> GetCoursesByAuthorAsync(ObjectId authorId)
+        {
+            if (authorId == ObjectId.Empty)
+                throw new ArgumentException("ID do autor inválido");
+            return await _courseRepository.GetCoursesByAuthorAsync(authorId);
         }
     }
 }

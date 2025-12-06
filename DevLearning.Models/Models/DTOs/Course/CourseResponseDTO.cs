@@ -4,7 +4,7 @@ namespace DevLearning.API.Models.DTOs.Course
 {
     public class CourseResponseDTO
     {
-        public Guid CourseId { get; init; }
+        public string CourseId { get; init; }
         public string Tag { get; init; }
         public string Title { get; init; }
         public string Summary { get; init; }
@@ -17,8 +17,10 @@ namespace DevLearning.API.Models.DTOs.Course
         public bool Active { get; init; }
         public bool Free { get; init; }
         public bool Featured { get; init; }
-        public string AuthorName { get; init; }
-        public string CategoryName { get; init; }
+        public string AuthorId { get; set; }      
+        public string CategoryId { get; set; }    
+        public string AuthorName { get; set; }    
+        public string CategoryName { get; set; }
         public string Tags { get; init; }
     }
 }

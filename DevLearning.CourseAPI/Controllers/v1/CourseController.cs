@@ -3,6 +3,7 @@ using DevLearning.CourseAPI.Services;
 using DevLearning.Models.DTOs.Course;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace DevLearning.CourseAPI.Controllers.v1
 {
@@ -11,10 +12,12 @@ namespace DevLearning.CourseAPI.Controllers.v1
     public class CourseController : ControllerBase
     {
         private CourseService _courseService;
+        private readonly ILogger<CourseController> _logger;
 
-        public CourseController(CourseService service)
+        public CourseController(CourseService service, ILogger<CourseController> logger)
         {
             _courseService = service;
+            _logger = logger;
         }
 
         [HttpGet()]
@@ -124,6 +127,58 @@ namespace DevLearning.CourseAPI.Controllers.v1
             catch (Exception ex)
             {
                 return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+        [HttpGet("category/{categoryId}")]
+        public async Task<ActionResult<List<CourseResponseDTO>>> GetCoursesByCategory(string categoryId)
+        {
+            try
+            {
+                var id = ObjectId.Parse(categoryId);
+                var courses = await _courseService.GetCoursesByCategoryAsync(id);
+                if (!courses.Any())
+                    return NotFound(new { message = "Nenhum curso encontrado para esta categoria" });
+                return Ok(courses);
+            }
+            catch (FormatException)
+            {
+                return BadRequest("ID da categoria inválido");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar cursos por categoria");
+                return StatusCode(500, "Erro interno");
+            }
+        }
+
+        [HttpGet("author/{authorId}")]
+        public async Task<ActionResult<List<CourseResponseDTO>>> GetCoursesByAuthor(string authorId)
+        {
+            try
+            {
+                var id = ObjectId.Parse(authorId);
+                var courses = await _courseService.GetCoursesByAuthorAsync(id);
+                if (!courses.Any())
+                    return NotFound(new { message = "Nenhum curso encontrado para este autor" });
+                return Ok(courses);
+            }
+            catch (FormatException)
+            {
+                return BadRequest("ID do autor inválido");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar cursos por autor");
+                return StatusCode(500, "Erro interno");
             }
         }
     }
