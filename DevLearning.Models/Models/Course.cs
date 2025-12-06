@@ -60,33 +60,5 @@ namespace DevLearning.Models
             Tags = tags;
         }
 
-        //[JsonConstructor]
-        //public Course(
-        //    string tag,
-        //    string title,
-        //    string summary,
-        //    string url,
-        //    CourseLevel level,
-        //    int durationInMinutes,
-        //    Guid authorId,
-        //    Guid categoryId,
-        //    string tags)
-        //{
-        //    Id = Guid.NewGuid();
-        //    Tag = tag;
-        //    Title = title;
-        //    Summary = summary;
-        //    Url = url;
-        //    Level = level;
-        //    DurationInMinutes = durationInMinutes;
-        //    CreateDate = DateTime.UtcNow;
-        //    LastUpdateDate = DateTime.UtcNow;
-        //    Active = true;
-        //    Free = false;
-        //    Featured = false;
-        //    AuthorId = authorId;
-        //    CategoryId = categoryId;
-        //    Tags = tags;
-        //}
     }
 }
