@@ -1,67 +1,66 @@
 ﻿using DevLearning.API.Models.DTOs.Course;
-using DevLearning.AuthorAPI.Repositories;
-using DevLearning.CategoryAPI.Repositories.Interfaces;
 using DevLearning.CourseAPI.Repositories;
+using DevLearning.CourseAPI.Repositories.Interfaces;
 using DevLearning.CourseAPI.Services.Interfaces;
 using DevLearning.Models;
 using DevLearning.Models.DTOs.Course;
-using DevLearning.StudentAPI.Repository;
 using MongoDB.Bson;
 
 namespace DevLearning.CourseAPI.Services
 {
     public class CourseService : ICourseService
     {
-        private CourseRepository _courseRepository;
-        private ICategoryRepository _categoryRepository;
-        private AuthorRepository _authorRepository;
-        private StudentRepository _studentRepository;
+        private readonly ICourseRepository _courseRepository;
+        private readonly HttpClient _authorClient;
+        private readonly HttpClient _categoryClient;
+        private readonly HttpClient _studentClient;
+        private readonly ILogger<CourseService> _logger;
 
-        public CourseService(CourseRepository courseRepository, ICategoryRepository categoryRepository, 
-            AuthorRepository authorRepository, StudentRepository studentRepository)
+        public CourseService(
+         ICourseRepository courseRepository,
+         IHttpClientFactory httpClientFactory,
+         ILogger<CourseService> logger)
         {
             _courseRepository = courseRepository;
-            _categoryRepository = categoryRepository;
-            _authorRepository = authorRepository;
-            _studentRepository = studentRepository;
+            _logger = logger;
+            _authorClient = httpClientFactory.CreateClient("AuthorAPI");
+            _categoryClient = httpClientFactory.CreateClient("CategoryAPI");
+            _studentClient = httpClientFactory.CreateClient("StudentAPI");
         }
 
         public async Task CreateCourseAsync(CourseRequestDTO course)
         {
-            try
-            {
-                var verifyTitle = await _courseRepository.GetOneCourseByTitleAsync(course.Title);
-                var verifyAuthor = await _authorRepository.GetAuthorByIdAsync(course.AuthorId);
-                var verifyCategory = await _categoryRepository.GetCategoryByIdAsync(course.CategoryId);
-                if (verifyTitle is null)
-                {
-                    if (verifyAuthor is not null)
-                    {
-                        if (verifyCategory is not null)
-                        {
-                            var newCourse = new Course(Guid.NewGuid(), course.Tag, course.Title, course.Summary, course.Url, course.Level, course.DurationInMinutes, DateTime.UtcNow, DateTime.UtcNow, true, false, false, course.AuthorId, course.CategoryId, course.Tags);
-                            await _courseRepository.CreateCourseAsync(newCourse);
-                        }
-                        else
-                        {
-                            throw new Exception("Categoria inexistente!");
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("Autor inexistente!");
-                    }
-                }
-                else
-                {
-                    throw new Exception("Título de curso já existente!");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            var verifyTitle = await _courseRepository.GetOneCourseByTitleAsync(course.Title);
+            if (verifyTitle != null)
+                throw new Exception("Título de curso já existente!");
 
+            var authorResp = await _authorClient.GetAsync($"{course.AuthorId}");
+            if (!authorResp.IsSuccessStatusCode)
+                throw new Exception("Autor inexistente!");
+
+            var categoryResp = await _categoryClient.GetAsync($"{course.CategoryId}");
+            if (!categoryResp.IsSuccessStatusCode)
+                throw new Exception("Categoria inexistente!");
+
+            var newCourse = new Course(
+                Guid.NewGuid(),
+                course.Tag,
+                course.Title,
+                course.Summary,
+                course.Url,
+                course.Level,
+                course.DurationInMinutes,
+                DateTime.UtcNow,
+                DateTime.UtcNow,
+                true,
+                false,
+                false,
+                course.AuthorId,
+                course.CategoryId,
+                course.Tags
+            );
+
+            await _courseRepository.CreateCourseAsync(newCourse);
         }
 
         public async Task<List<CourseResponseDTO>> GetAllCoursesAsync(string category)
@@ -88,43 +87,41 @@ namespace DevLearning.CourseAPI.Services
             }
         }
 
-        public async Task UpdateCourseByTitleAsync(string title, CourseUpdateDTO update)
-        {
-            try
-            {
-                await _courseRepository.UpdateCourseByTitleAsync(title, update.Free, update.Featured, DateTime.UtcNow);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
         public async Task UpdateActiveCourseByTitleAsync(string title, CourseActiveDTO update)
         {
             try
             {
                 var courseStorage = await _courseRepository.GetOneCourseByTitleAsync(title);
                 if (courseStorage is null)
-                {
                     throw new Exception("Você não modificar um curso inexistente!");
-                }
-                var verifyStudentCourse = await _studentRepository.GetCountStudentCourse(courseStorage.CourseId);
+
+                var requestUrl = $"api/v1/student/CountStudentsInCourse/{courseStorage.CourseId}";
+
+                var response = await _studentClient.GetAsync(requestUrl);
+                if (!response.IsSuccessStatusCode)
+                    throw new Exception("Erro ao consultar alunos do curso no StudentAPI.");
+
+                var countString = await response.Content.ReadAsStringAsync();
+                if (!int.TryParse(countString, out var verifyStudentCourse))
+                    throw new Exception("Resposta inválida do StudentAPI ao contar alunos.");
 
                 if (verifyStudentCourse > 0)
-                {
                     throw new Exception("Você não pode inativar um curso com alunos nele!");
-                }
 
-                await _courseRepository.UpdateActiveCourseByTitleAsync(title, update.Active, DateTime.UtcNow);
+                await _courseRepository.UpdateActiveCourseByTitleAsync(
+                    title,
+                    update.Active,
+                    DateTime.UtcNow
+                );
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                _logger.LogError(ex, "Erro ao atualizar Active do curso {Title}", title);
+                throw;
             }
         }
 
-        public async Task<CourseResponseDTO> GetOneCourseByIdAsync(string id)
+        public async Task<CourseResponseDTO> GetOneCourseByIdAsync(ObjectId id)
         {
             try
             {
@@ -148,6 +145,23 @@ namespace DevLearning.CourseAPI.Services
             if (authorId == ObjectId.Empty)
                 throw new ArgumentException("ID do autor inválido");
             return await _courseRepository.GetCoursesByAuthorAsync(authorId);
+        }
+
+        public async Task UpdateCourseByTitleAsync(string title, CourseUpdateDTO update)
+        {
+            try
+            {
+                var courseStorage = await _courseRepository.GetOneCourseByTitleAsync(title);
+                if (courseStorage is null)
+                    throw new Exception("Você não pode modificar um curso inexistente!");
+
+                await _courseRepository.UpdateCourseByTitleAsync(title, update);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao atualizar curso {Title}", title);
+                throw;
+            }
         }
     }
 }
