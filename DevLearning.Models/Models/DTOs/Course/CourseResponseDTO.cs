@@ -1,6 +1,6 @@
 ﻿using DevLearning.Models.Enums.Course;
 
-namespace DevLearning.API.Models.DTOs.Course
+namespace DevLearning.Models.DTOs.Course
 {
     public class CourseResponseDTO
     {
