@@ -1,5 +1,6 @@
 ﻿using DevLearning.Models.DTOs.Student;
 using DevLearning.StudentAPI.Services;
+using DevLearning.StudentAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,14 +10,14 @@ namespace DevLearning.StudentAPI.Controllers.v1
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private StudentService _studentService;
+        private IStudentService _studentService;
 
-        public StudentController(StudentService studentService)
+        public StudentController(IStudentService studentService)
         {
             _studentService = studentService;
         }
 
-        [HttpPost()]
+        [HttpPost]
         public async Task CreateStudent([FromBody] StudentRequestDTO student)
         {
             try
@@ -35,7 +36,7 @@ namespace DevLearning.StudentAPI.Controllers.v1
         {
             try
             {
-                await _studentService.InsertStudentCourse(Guid.Parse(studentId), Guid.Parse(courseId), student);
+                await _studentService.InsertStudentCourse(Guid.Parse(studentId), courseId, student);
                 return StatusCode(201, new { message = "Estudante adicionado com sucesso no curso" });
             }
             catch (Exception ex)
@@ -131,7 +132,7 @@ namespace DevLearning.StudentAPI.Controllers.v1
         {
             try
             {
-                await _studentService.UpdateStudentCourse(Guid.Parse(studentId), Guid.Parse(courseId), student);
+                await _studentService.UpdateStudentCourse(Guid.Parse(studentId), courseId, student);
                 return StatusCode(204, new { message = "Cliente atualizado com sucesso" });
             }
             catch (Exception ex)

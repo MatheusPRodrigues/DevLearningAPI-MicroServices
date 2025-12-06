@@ -1,10 +1,11 @@
 ﻿using DevLearning.Models.Enums.Course;
+using DevLearning.Models.Enums.StudentCourse;
 
 namespace DevLearning.Models.DTOs.Course
 {
     public class CourseStudentDTO
     {
-        public Guid CourseId { get; init; }
+        public string CourseId { get; init; }
         public string Title { get; init; }
         public string Summary { get; init; }
         public string Url { get; init; }
@@ -12,5 +13,6 @@ namespace DevLearning.Models.DTOs.Course
         public byte Progress { get; set; }
         public string LevelLabel => Level.ToString();
         public int DurationInMinutes { get; init; }
+        public FavoriteType Favorite { get; set; }
     }
 }

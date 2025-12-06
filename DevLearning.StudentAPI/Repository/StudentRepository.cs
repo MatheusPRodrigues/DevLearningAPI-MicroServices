@@ -54,23 +54,17 @@ namespace DevLearning.StudentAPI.Repository
                             s.Phone AS Phone, 
                             s.Birthdate AS BirthDate, 
                             s.CreateDate AS CreateDate,
-                            c.Id AS CourseId, 
-                            c.Title AS Title, 
-                            c.Summary AS Summary, 
-                            c.Url AS [Url], 
-                            c.Level AS [Level], 
+                            sc.CourseId AS CourseId,
                             sc.Progress as Progress,
-                            c.DurationInMinutes AS DurationInMinutes,
                             sc.Favorite AS Favorite, 
                             sc.StartDate AS StartDate, 
                             sc.LastUpdateDate AS LastUpdateDate
                             FROM Student s
-                            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
-                            LEFT JOIN Course c ON sc.CourseId = c.Id;";
+                            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id;";
                 var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
                 {
                     student.Courses ??= new List<CourseStudentDTO>();
-                    if (course != null && course.CourseId != Guid.Empty)
+                    if (course != null && course.CourseId != String.Empty)
                         student.Courses.Add(course);
 
                     return student;
@@ -117,30 +111,47 @@ namespace DevLearning.StudentAPI.Repository
             try
             {
                 var sql = @"SELECT 
-            s.Id AS StudentId, 
-            s.Name AS [Name], 
-            s.Email AS Email, 
-            s.Document AS Document, 
-            s.Phone AS Phone, 
-            s.Birthdate AS BirthDate, 
-            s.CreateDate AS CreateDate,
-            c.Id AS CourseId, 
-            c.Title AS Title, 
-            c.Summary AS Summary, 
-            c.Url AS [Url], 
-            c.Level AS [Level], 
-            sc.Progress as Progress,
-            c.DurationInMinutes AS DurationInMinutes,
-            sc.Favorite AS Favorite, 
-            sc.StartDate AS StartDate, 
-            sc.LastUpdateDate AS LastUpdateDate
-            FROM Student s
-            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
-            LEFT JOIN Course c ON sc.CourseId = c.Id WHERE Document = @Document";
+                            s.Id AS StudentId, 
+                            s.Name AS [Name], 
+                            s.Email AS Email, 
+                            s.Document AS Document, 
+                            s.Phone AS Phone, 
+                            s.Birthdate AS BirthDate, 
+                            s.CreateDate AS CreateDate,
+                            sc.CourseId AS CourseId,
+                            sc.Progress as Progress,
+                            sc.Favorite AS Favorite, 
+                            sc.StartDate AS StartDate, 
+                            sc.LastUpdateDate AS LastUpdateDate
+                            FROM Student s
+                            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
+                            WHERE Document = @Document;";
+
+            //    var sql = @"SELECT 
+            //s.Id AS StudentId, 
+            //s.Name AS [Name], 
+            //s.Email AS Email, 
+            //s.Document AS Document, 
+            //s.Phone AS Phone, 
+            //s.Birthdate AS BirthDate, 
+            //s.CreateDate AS CreateDate,
+            //c.Id AS CourseId, 
+            //c.Title AS Title, 
+            //c.Summary AS Summary, 
+            //c.Url AS [Url], 
+            //c.Level AS [Level], 
+            //sc.Progress as Progress,
+            //c.DurationInMinutes AS DurationInMinutes,
+            //sc.Favorite AS Favorite, 
+            //sc.StartDate AS StartDate, 
+            //sc.LastUpdateDate AS LastUpdateDate
+            //FROM Student s
+            //LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
+            //LEFT JOIN Course c ON sc.CourseId = c.Id WHERE Document = @Document";
                 var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
                 {
                     student.Courses ??= new List<CourseStudentDTO>();
-                    if (course != null && course.CourseId != Guid.Empty)
+                    if (course != null && course.CourseId != String.Empty)
                         student.Courses.Add(course);
 
                     return student;
@@ -170,30 +181,47 @@ namespace DevLearning.StudentAPI.Repository
             try
             {
                 var sql = @"SELECT 
-            s.Id AS StudentId, 
-            s.Name AS [Name], 
-            s.Email AS Email, 
-            s.Document AS Document, 
-            s.Phone AS Phone, 
-            s.Birthdate AS BirthDate, 
-            s.CreateDate AS CreateDate,
-            c.Id AS CourseId, 
-            c.Title AS Title, 
-            c.Summary AS Summary, 
-            c.Url AS [Url], 
-            c.Level AS [Level], 
-            sc.Progress as Progress,
-            c.DurationInMinutes AS DurationInMinutes,
-            sc.Favorite AS Favorite, 
-            sc.StartDate AS StartDate, 
-            sc.LastUpdateDate AS LastUpdateDate
-            FROM Student s
-            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
-            LEFT JOIN Course c ON sc.CourseId = c.Id WHERE Email = @Email";
+                            s.Id AS StudentId, 
+                            s.Name AS [Name], 
+                            s.Email AS Email, 
+                            s.Document AS Document, 
+                            s.Phone AS Phone, 
+                            s.Birthdate AS BirthDate, 
+                            s.CreateDate AS CreateDate,
+                            sc.CourseId AS CourseId,
+                            sc.Progress as Progress,
+                            sc.Favorite AS Favorite, 
+                            sc.StartDate AS StartDate, 
+                            sc.LastUpdateDate AS LastUpdateDate
+                            FROM Student s
+                            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
+                            WHERE Email = @Email;";
+
+            //    var sql = @"SELECT 
+            //s.Id AS StudentId, 
+            //s.Name AS [Name], 
+            //s.Email AS Email, 
+            //s.Document AS Document, 
+            //s.Phone AS Phone, 
+            //s.Birthdate AS BirthDate, 
+            //s.CreateDate AS CreateDate,
+            //c.Id AS CourseId, 
+            //c.Title AS Title, 
+            //c.Summary AS Summary, 
+            //c.Url AS [Url], 
+            //c.Level AS [Level], 
+            //sc.Progress as Progress,
+            //c.DurationInMinutes AS DurationInMinutes,
+            //sc.Favorite AS Favorite, 
+            //sc.StartDate AS StartDate, 
+            //sc.LastUpdateDate AS LastUpdateDate
+            //FROM Student s
+            //LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
+            //LEFT JOIN Course c ON sc.CourseId = c.Id WHERE Email = @Email";
                 var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
                 {
                     student.Courses ??= new List<CourseStudentDTO>();
-                    if (course != null && course.CourseId != Guid.Empty)
+                    if (course != null && course.CourseId != String.Empty)
                         student.Courses.Add(course);
 
                     return student;
@@ -230,23 +258,40 @@ namespace DevLearning.StudentAPI.Repository
                             s.Phone AS Phone, 
                             s.Birthdate AS BirthDate, 
                             s.CreateDate AS CreateDate,
-                            c.Id AS CourseId, 
-                            c.Title AS Title, 
-                            c.Summary AS Summary, 
-                            c.Url AS [Url], 
-                            c.Level AS [Level], 
+                            sc.CourseId AS CourseId,
                             sc.Progress as Progress,
-                            c.DurationInMinutes AS DurationInMinutes,
                             sc.Favorite AS Favorite, 
                             sc.StartDate AS StartDate, 
                             sc.LastUpdateDate AS LastUpdateDate
                             FROM Student s
                             LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
-                            LEFT JOIN Course c ON sc.CourseId = c.Id WHERE s.Id = @StudentId";
+                            WHERE s.Id = @StudentId;";
+
+                //var sql = @"SELECT 
+                //            s.Id AS StudentId, 
+                //            s.Name AS [Name], 
+                //            s.Email AS Email, 
+                //            s.Document AS Document, 
+                //            s.Phone AS Phone, 
+                //            s.Birthdate AS BirthDate, 
+                //            s.CreateDate AS CreateDate,
+                //            c.Id AS CourseId, 
+                //            c.Title AS Title, 
+                //            c.Summary AS Summary, 
+                //            c.Url AS [Url], 
+                //            c.Level AS [Level], 
+                //            sc.Progress as Progress,
+                //            c.DurationInMinutes AS DurationInMinutes,
+                //            sc.Favorite AS Favorite, 
+                //            sc.StartDate AS StartDate, 
+                //            sc.LastUpdateDate AS LastUpdateDate
+                //            FROM Student s
+                //            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
+                //            LEFT JOIN Course c ON sc.CourseId = c.Id WHERE s.Id = @StudentId";
                 var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
                 {
                     student.Courses ??= new List<CourseStudentDTO>();
-                    if (course != null && course.CourseId != Guid.Empty)
+                    if (course != null && course.CourseId != String.Empty)
                         student.Courses.Add(course);
 
                     return student;
@@ -271,12 +316,20 @@ namespace DevLearning.StudentAPI.Repository
             }
         }
 
-        public async Task InsertStudentCourse(Guid studentId, Guid courseId, StudentRequestInsertCourseDTO studentCourse)
+        public async Task InsertStudentCourse(Guid studentId, string courseId, StudentRequestInsertCourseDTO studentCourse)
         {
             try
             {
-                var sql = @"INSERT INTO StudentCourse (CourseId, StudentId, Favorite, Progress, StartDate) VALUES (@CourseId, @StudentId, @Favorite, @Progress, @StartDate)";
-                await _connection.ExecuteAsync(sql, new { CourseId = courseId, StudentId = studentId, Favorite = studentCourse.Favorite, Progress = studentCourse.Progress, StartDate = studentCourse.StartDate });
+                var sql = @"INSERT INTO StudentCourse (CourseId, StudentId, Favorite, Progress, StartDate)
+                            VALUES (@CourseId, @StudentId, @Favorite, @Progress, @StartDate)";
+                await _connection.ExecuteAsync(sql, new 
+                { 
+                    CourseId = courseId,
+                    StudentId = studentId,
+                    Favorite = studentCourse.Favorite,
+                    Progress = studentCourse.Progress,
+                    StartDate = studentCourse.StartDate 
+                });
             }
             catch (SqlException ex)
             {
@@ -299,7 +352,15 @@ namespace DevLearning.StudentAPI.Repository
                             Phone = @Phone,
                             Birthdate = @Birthdate
                             WHERE Id = @id";
-                await _connection.ExecuteAsync(sql, new { Name = student.Name, Email = student.Email, Document = student.Document, Phone = student.Phone, Birthdate = student.Birthdate, id = id });
+                await _connection.ExecuteAsync(sql, new 
+                { 
+                    Name = student.Name,
+                    Email = student.Email,
+                    Document = student.Document,
+                    Phone = student.Phone,
+                    Birthdate = student.Birthdate,
+                    id = id 
+                });
             }
             catch (SqlException ex)
             {
@@ -311,14 +372,19 @@ namespace DevLearning.StudentAPI.Repository
             }
         }
 
-        public async Task UpdateStudentCourse(Guid studentId, Guid courseId, StudentCourseRequestUpdateDTO studentCourse)
+        public async Task UpdateStudentCourse(Guid studentId, string courseId, StudentCourseRequestUpdateDTO studentCourse)
         {
             try
             {
                 var sql = @"UPDATE StudentCourse SET 
                             Progress = @Progress,
                             Favorite = @Favorite WHERE CourseId = @CourseId AND StudentId = @StudentId";
-                await _connection.ExecuteAsync(sql, new { Progress = studentCourse.Progress, Favorite = studentCourse.Favorite, CourseId = courseId, StudentId = studentId });
+                await _connection.ExecuteAsync(sql, new 
+                { 
+                    Progress = studentCourse.Progress,
+                    Favorite = studentCourse.Favorite, 
+                    CourseId = courseId, StudentId = studentId 
+                });
             }
             catch (SqlException ex)
             {
@@ -341,37 +407,15 @@ namespace DevLearning.StudentAPI.Repository
                             s.Document AS Document, 
                             s.Phone AS Phone, 
                             s.Birthdate AS BirthDate, 
-                            s.CreateDate AS CreateDate,
-                            c.Id AS CourseId, 
-                            c.Title AS Title, 
-                            c.Summary AS Summary, 
-                            c.Url AS [Url], 
-                            c.Level AS [Level], 
-                            sc.Progress as Progress,
-                            c.DurationInMinutes AS DurationInMinutes,
-                            sc.Favorite AS Favorite, 
-                            sc.StartDate AS StartDate, 
-                            sc.LastUpdateDate AS LastUpdateDate
+                            s.CreateDate AS CreateDate
                             FROM Student s
-                            LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
-                            LEFT JOIN Course c ON sc.CourseId = c.Id WHERE Document = @Document AND Email = @Email";
-                var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
-                {
-                    student.Courses ??= new List<CourseStudentDTO>();
-                    if (course != null && course.CourseId != Guid.Empty)
-                        student.Courses.Add(course);
+                            WHERE Document = @Document AND Email = @Email";
 
-                    return student;
-                }, new { Document = document, Email = email }, splitOn: "CourseId");
-
-                var result = students.GroupBy(s => s.StudentId).Select(g =>
-                {
-                    var groupedStudent = g.FirstOrDefault();
-                    groupedStudent.Courses = g.SelectMany(s => s.Courses ?? new List<CourseStudentDTO>()).ToList();
-                    return groupedStudent;
+                return await _connection.QueryFirstOrDefaultAsync<StudentResponseDTO>(sql, new 
+                { 
+                    Document = document,
+                    Email = email 
                 });
-
-                return result.FirstOrDefault();
             }
             catch (SqlException ex)
             {
