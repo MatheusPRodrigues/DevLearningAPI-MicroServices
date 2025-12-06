@@ -127,27 +127,27 @@ namespace DevLearning.StudentAPI.Repository
                             LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
                             WHERE Document = @Document;";
 
-            //    var sql = @"SELECT 
-            //s.Id AS StudentId, 
-            //s.Name AS [Name], 
-            //s.Email AS Email, 
-            //s.Document AS Document, 
-            //s.Phone AS Phone, 
-            //s.Birthdate AS BirthDate, 
-            //s.CreateDate AS CreateDate,
-            //c.Id AS CourseId, 
-            //c.Title AS Title, 
-            //c.Summary AS Summary, 
-            //c.Url AS [Url], 
-            //c.Level AS [Level], 
-            //sc.Progress as Progress,
-            //c.DurationInMinutes AS DurationInMinutes,
-            //sc.Favorite AS Favorite, 
-            //sc.StartDate AS StartDate, 
-            //sc.LastUpdateDate AS LastUpdateDate
-            //FROM Student s
-            //LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
-            //LEFT JOIN Course c ON sc.CourseId = c.Id WHERE Document = @Document";
+                //    var sql = @"SELECT 
+                //s.Id AS StudentId, 
+                //s.Name AS [Name], 
+                //s.Email AS Email, 
+                //s.Document AS Document, 
+                //s.Phone AS Phone, 
+                //s.Birthdate AS BirthDate, 
+                //s.CreateDate AS CreateDate,
+                //c.Id AS CourseId, 
+                //c.Title AS Title, 
+                //c.Summary AS Summary, 
+                //c.Url AS [Url], 
+                //c.Level AS [Level], 
+                //sc.Progress as Progress,
+                //c.DurationInMinutes AS DurationInMinutes,
+                //sc.Favorite AS Favorite, 
+                //sc.StartDate AS StartDate, 
+                //sc.LastUpdateDate AS LastUpdateDate
+                //FROM Student s
+                //LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
+                //LEFT JOIN Course c ON sc.CourseId = c.Id WHERE Document = @Document";
                 var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
                 {
                     student.Courses ??= new List<CourseStudentDTO>();
@@ -197,27 +197,27 @@ namespace DevLearning.StudentAPI.Repository
                             LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
                             WHERE Email = @Email;";
 
-            //    var sql = @"SELECT 
-            //s.Id AS StudentId, 
-            //s.Name AS [Name], 
-            //s.Email AS Email, 
-            //s.Document AS Document, 
-            //s.Phone AS Phone, 
-            //s.Birthdate AS BirthDate, 
-            //s.CreateDate AS CreateDate,
-            //c.Id AS CourseId, 
-            //c.Title AS Title, 
-            //c.Summary AS Summary, 
-            //c.Url AS [Url], 
-            //c.Level AS [Level], 
-            //sc.Progress as Progress,
-            //c.DurationInMinutes AS DurationInMinutes,
-            //sc.Favorite AS Favorite, 
-            //sc.StartDate AS StartDate, 
-            //sc.LastUpdateDate AS LastUpdateDate
-            //FROM Student s
-            //LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
-            //LEFT JOIN Course c ON sc.CourseId = c.Id WHERE Email = @Email";
+                //    var sql = @"SELECT 
+                //s.Id AS StudentId, 
+                //s.Name AS [Name], 
+                //s.Email AS Email, 
+                //s.Document AS Document, 
+                //s.Phone AS Phone, 
+                //s.Birthdate AS BirthDate, 
+                //s.CreateDate AS CreateDate,
+                //c.Id AS CourseId, 
+                //c.Title AS Title, 
+                //c.Summary AS Summary, 
+                //c.Url AS [Url], 
+                //c.Level AS [Level], 
+                //sc.Progress as Progress,
+                //c.DurationInMinutes AS DurationInMinutes,
+                //sc.Favorite AS Favorite, 
+                //sc.StartDate AS StartDate, 
+                //sc.LastUpdateDate AS LastUpdateDate
+                //FROM Student s
+                //LEFT JOIN StudentCourse sc ON sc.StudentId = s.Id
+                //LEFT JOIN Course c ON sc.CourseId = c.Id WHERE Email = @Email";
                 var students = await _connection.QueryAsync<StudentResponseDTO, CourseStudentDTO, StudentResponseDTO>(sql, (student, course) =>
                 {
                     student.Courses ??= new List<CourseStudentDTO>();

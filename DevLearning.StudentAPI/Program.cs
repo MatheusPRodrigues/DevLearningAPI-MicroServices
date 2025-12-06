@@ -15,6 +15,8 @@ builder.Services.AddSingleton<ConnectionDB>();
 builder.Services.AddSingleton<IStudentRepository, StudentRepository>();
 builder.Services.AddSingleton<IStudentService, StudentService>();
 
+builder.Services.AddHttpClient<StudentService>(client => client.BaseAddress = new Uri("https://localhost:5007/api/v1/Course"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

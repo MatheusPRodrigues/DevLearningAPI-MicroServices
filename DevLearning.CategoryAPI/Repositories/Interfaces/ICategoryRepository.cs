@@ -1,4 +1,7 @@
-﻿namespace DevLearning.CategoryAPI.Repositories.Interfaces
+﻿using DevLearning.Models;
+using DevLearning.Models.DTOs.Category;
+
+namespace DevLearning.CategoryAPI.Repositories.Interfaces
 {
     public interface ICategoryRepository
     {
