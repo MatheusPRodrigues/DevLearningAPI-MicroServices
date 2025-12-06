@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DevLearning.CourseAPI\DevLearning.CourseAPI.csproj" />
+    <!--<ProjectReference Include="..\DevLearning.CourseAPI\DevLearning.CourseAPI.csproj" />-->
     <ProjectReference Include="..\DevLearning.Models\DevLearning.Models.csproj" />
   </ItemGroup>
 
