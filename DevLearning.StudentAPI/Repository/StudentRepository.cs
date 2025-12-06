@@ -89,7 +89,7 @@ namespace DevLearning.StudentAPI.Repository
             }
         }
 
-        public Task<int> GetCountStudentCourse(Guid courseId)
+        public Task<int> GetCountStudentCourse(string courseId)
         {
             try
             {

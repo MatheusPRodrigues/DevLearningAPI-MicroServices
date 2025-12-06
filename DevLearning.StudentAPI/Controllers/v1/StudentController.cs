@@ -140,5 +140,22 @@ namespace DevLearning.StudentAPI.Controllers.v1
                 return StatusCode(500, new { error = ex.Message });
             }
         }
+
+        [HttpGet("CountStudentsInCourse/{courseId}")]
+        public async Task<ActionResult<int>> GetStudentsInCourseAsync(string courseId)
+        {
+            try
+            {
+                var countStudentsInCourse = await _studentService.GetCountStudentCourse(courseId);
+                if (countStudentsInCourse > 0)
+                    return Ok(countStudentsInCourse);
+
+                return NotFound(countStudentsInCourse);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        } 
     }
 }

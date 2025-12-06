@@ -48,6 +48,18 @@ namespace DevLearning.StudentAPI.Services
             }
         }
 
+        public async Task<int> GetCountStudentCourse(string courseId)
+        {
+            try
+            {
+                return await _studentRepository.GetCountStudentCourse(courseId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<StudentResponseDTO> GetStudentByDocument(string document)
         {
             try
