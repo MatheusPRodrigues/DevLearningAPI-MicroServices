@@ -4,7 +4,9 @@ using DevLearning.CourseAPI.Repositories.Interfaces;
 using DevLearning.CourseAPI.Services.Interfaces;
 using DevLearning.Models;
 using DevLearning.Models.DTOs.Course;
+using Microsoft.AspNetCore.Http.HttpResults;
 using MongoDB.Bson;
+using System.Net;
 
 namespace DevLearning.CourseAPI.Services
 {
@@ -95,9 +97,10 @@ namespace DevLearning.CourseAPI.Services
                 if (courseStorage is null)
                     throw new Exception("Você não modificar um curso inexistente!");
 
-                var requestUrl = $"api/v1/student/CountStudentsInCourse/{courseStorage.CourseId}";
+                var requestUrl = $"CountStudentsInCourse/{courseStorage.CourseId}";
 
                 var response = await _studentClient.GetAsync(requestUrl);
+
                 if (!response.IsSuccessStatusCode)
                     throw new Exception("Erro ao consultar alunos do curso no StudentAPI.");
 

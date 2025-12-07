@@ -147,10 +147,11 @@ namespace DevLearning.StudentAPI.Controllers.v1
             try
             {
                 var countStudentsInCourse = await _studentService.GetCountStudentCourse(courseId);
-                if (countStudentsInCourse > 0)
-                    return Ok(countStudentsInCourse);
+                //if (countStudentsInCourse > 0)
+                //    return Ok(countStudentsInCourse);
 
-                return NotFound(countStudentsInCourse);
+                //return NotFound(countStudentsInCourse);
+                return Ok(countStudentsInCourse);
             }
             catch (Exception ex)
             {

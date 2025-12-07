@@ -55,7 +55,7 @@ builder.Services.AddHttpClient("CategoryAPI", c =>
 
 builder.Services.AddHttpClient("StudentAPI", c =>
 {
-    c.BaseAddress = new Uri("https://localhost:5005/api/v1/student/");
+    c.BaseAddress = new Uri("https://localhost:5009/api/v1/student/");
 });
 
 var app = builder.Build();
