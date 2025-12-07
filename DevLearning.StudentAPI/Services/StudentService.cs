@@ -1,8 +1,11 @@
 ﻿using DevLearning.Models;
+using DevLearning.Models.DTOs.Course;
 using DevLearning.Models.DTOs.Student;
 using DevLearning.StudentAPI.Repository;
 using DevLearning.StudentAPI.Repository.Interfaces;
 using DevLearning.StudentAPI.Services.Interfaces;
+using System.Reflection.Metadata;
+using System.Xml.Linq;
 
 namespace DevLearning.StudentAPI.Services
 {
@@ -40,7 +43,25 @@ namespace DevLearning.StudentAPI.Services
         {
             try
             {
-                return await _studentRepository.GetAllStudents();
+                var students = await _studentRepository.GetAllStudents();
+                if (students is not null)
+                {
+                    foreach (var s in students)
+                    {
+                        if (s.Courses is not null || s.Courses.Count > 0)
+                            foreach (var c in s.Courses)
+                            {
+                                var course = await _httpClient.GetFromJsonAsync<CourseResponseDTO>(c.CourseId);
+                                c.Title = String.IsNullOrWhiteSpace(course.Title) ? "Sem título" : course.Title;
+                                c.Summary = course.Summary;
+                                c.Url = course.Url;
+                                c.Level = course.Level;
+                                c.DurationInMinutes = course.DurationInMinutes;
+                            }
+                    }
+                }
+
+                return students;
             }
             catch (Exception ex)
             {
@@ -64,7 +85,22 @@ namespace DevLearning.StudentAPI.Services
         {
             try
             {
-                return await _studentRepository.GetStudentByDocument(document);
+                var student = await _studentRepository.GetStudentByDocument(document);
+                if (student is not null)
+                {
+                    if (student.Courses is not null || student.Courses.Count > 0)
+                        foreach (var c in student.Courses)
+                        {
+                            var course = await _httpClient.GetFromJsonAsync<CourseResponseDTO>(c.CourseId);
+                            c.Title = String.IsNullOrWhiteSpace(course.Title) ? "Sem título" : course.Title;
+                            c.Summary = course.Summary;
+                            c.Url = course.Url;
+                            c.Level = course.Level;
+                            c.DurationInMinutes = course.DurationInMinutes;
+                        }
+                }
+
+                return student;
             }
             catch (Exception ex)
             {
@@ -76,7 +112,22 @@ namespace DevLearning.StudentAPI.Services
         {
             try
             {
-                return await _studentRepository.GetStudentByEmail(email);
+                var student = await _studentRepository.GetStudentByEmail(email);
+                if (student is not null)
+                {
+                    if (student.Courses is not null || student.Courses.Count > 0)
+                        foreach (var c in student.Courses)
+                        {
+                            var course = await _httpClient.GetFromJsonAsync<CourseResponseDTO>(c.CourseId);
+                            c.Title = String.IsNullOrWhiteSpace(course.Title) ? "Sem título" : course.Title;
+                            c.Summary = course.Summary;
+                            c.Url = course.Url;
+                            c.Level = course.Level;
+                            c.DurationInMinutes = course.DurationInMinutes;
+                        }
+                }
+
+                return student;
             }
             catch (Exception ex)
             {
@@ -88,7 +139,26 @@ namespace DevLearning.StudentAPI.Services
         {
             try
             {
-                return await _studentRepository.GetStudentById(Guid.Parse(id));
+                var guidId = Guid.Parse(id);
+                if (guidId == Guid.Empty)
+                    throw new Exception("Id de Estudante é inváldio!");
+
+                var student = await _studentRepository.GetStudentById(guidId);
+                if (student is not null)
+                {
+                    if (student.Courses is not null || student.Courses.Count > 0)
+                        foreach (var c in student.Courses)
+                        {
+                            var course = await _httpClient.GetFromJsonAsync<CourseResponseDTO>(c.CourseId);
+                            c.Title = String.IsNullOrWhiteSpace(course.Title) ? "Sem título" : course.Title;
+                            c.Summary = course.Summary;
+                            c.Url = course.Url;
+                            c.Level = course.Level;
+                            c.DurationInMinutes = course.DurationInMinutes;
+                        }
+                }
+
+                return student;
             }
             catch (Exception ex)
             {
@@ -100,15 +170,20 @@ namespace DevLearning.StudentAPI.Services
         {
             try
             {
-                if (await _studentRepository.GetStudentById(studentId) is null)
+                var student = await _studentRepository.GetStudentById(studentId);
+                if (student is null)
                     throw new Exception("Estudante não encontrado");
-                //var course = await _courseRepository.GetOneCourseByIdAsync(courseId);
-                //if (course is null)
-                //    throw new Exception("Curso não encontrado");
-                //if (course.Active == false)
-                //    throw new Exception("Curso inativo, não pode ocorrer mátricula");
-                //if (await _studentRepository.GetStudentCourse(studentId, courseId) is not null)
-                //    throw new Exception("Estudante já está matriculado nesse curso");
+
+                Console.WriteLine(_httpClient.BaseAddress);
+
+                var response = await _httpClient.GetFromJsonAsync<CourseResponseDTO>($"{courseId}");
+                if (response is null)
+                    throw new Exception("Curso não encontrado");
+                if (response.Active == false)
+                    throw new Exception("Curso inativo, não pode ocorrer mátricula");
+                if (student.Courses.Any(c => c.CourseId == courseId))
+                    throw new Exception("Estudante já está matriculado nesse curso");
+
                 await _studentRepository.InsertStudentCourse(studentId, courseId, studentCourse);
             }
             catch (Exception ex)

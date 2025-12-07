@@ -13,9 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<ConnectionDB>();
 
 builder.Services.AddSingleton<IStudentRepository, StudentRepository>();
-builder.Services.AddSingleton<IStudentService, StudentService>();
+//builder.Services.AddSingleton<IStudentService, StudentService>();
 
-builder.Services.AddHttpClient<StudentService>(client => client.BaseAddress = new Uri("https://localhost:5007/api/v1/Course"));
+builder.Services.AddHttpClient<IStudentService, StudentService>(client => client.BaseAddress = new Uri("https://localhost:5007/api/v1/course/"));
 
 var app = builder.Build();
 
