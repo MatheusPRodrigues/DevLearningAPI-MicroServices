@@ -35,7 +35,7 @@ builder.Services.AddSingleton<ICourseRepository, CourseRepository>();
 
 builder.Services.AddHttpClient("AuthorAPI", c =>
 {
-    c.BaseAddress = new Uri("https://localhost:5001/api/author/");
+    c.BaseAddress = new Uri("https://localhost:5001/api/v1/author/");
 }).ConfigurePrimaryHttpMessageHandler(() =>
     new HttpClientHandler
     {
@@ -45,7 +45,7 @@ builder.Services.AddHttpClient("AuthorAPI", c =>
 
 builder.Services.AddHttpClient("CategoryAPI", c =>
 {
-    c.BaseAddress = new Uri("https://localhost:5005/api/category/");
+    c.BaseAddress = new Uri("https://localhost:5005/api/v1/category/");
 }).ConfigurePrimaryHttpMessageHandler(() =>
     new HttpClientHandler
     {

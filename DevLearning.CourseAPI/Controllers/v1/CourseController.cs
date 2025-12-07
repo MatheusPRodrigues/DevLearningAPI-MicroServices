@@ -182,5 +182,34 @@ namespace DevLearning.CourseAPI.Controllers.v1
                 return StatusCode(500, "Erro interno");
             }
         }
+
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<CourseResponseDTO>> GetOneCourseByIdAsync(string Id)
+        {
+            try
+            {
+                var objectId = new ObjectId(Id);
+
+                var course = await _courseService.GetOneCourseByIdAsync(objectId);
+
+                if (course is null)
+                    return NotFound(new { message = "Curso não encontrado" });
+
+                return Ok(course);
+            }
+            catch (FormatException)
+            {
+                return BadRequest("ID do curso inválido");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar curso por ID");
+                return StatusCode(500, "Erro interno");
+            }
+        }
     }
 }

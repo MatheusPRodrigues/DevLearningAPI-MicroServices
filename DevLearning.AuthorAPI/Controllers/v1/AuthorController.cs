@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.AuthorAPI.Controllers.v1
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class AuthorController : ControllerBase
     {
