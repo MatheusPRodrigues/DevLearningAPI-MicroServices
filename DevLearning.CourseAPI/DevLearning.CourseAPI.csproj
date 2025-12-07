@@ -19,10 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DevLearning.AuthorAPI\DevLearning.AuthorAPI.csproj" />
     <ProjectReference Include="..\DevLearning.Models\DevLearning.Models.csproj" />
-    <ProjectReference Include="..\DevLearning.CategoryAPI\DevLearning.CategoryAPI.csproj" />
-    <ProjectReference Include="..\DevLearning.StudentAPI\DevLearning.StudentAPI.csproj" />
   </ItemGroup>
 
 </Project>

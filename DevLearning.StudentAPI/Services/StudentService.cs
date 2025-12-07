@@ -9,10 +9,15 @@ namespace DevLearning.StudentAPI.Services
     public class StudentService : IStudentService
     {
         private IStudentRepository _studentRepository;
+        private HttpClient _httpClient;
 
-        public StudentService(IStudentRepository studentRepository)
+        public StudentService(
+            IStudentRepository studentRepository,
+            HttpClient httpClient
+        )
         {
             _studentRepository = studentRepository;
+            _httpClient = httpClient;
         }
 
         public async Task CreateStudent(StudentRequestDTO student)
@@ -36,6 +41,18 @@ namespace DevLearning.StudentAPI.Services
             try
             {
                 return await _studentRepository.GetAllStudents();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<int> GetCountStudentCourse(string courseId)
+        {
+            try
+            {
+                return await _studentRepository.GetCountStudentCourse(courseId);
             }
             catch (Exception ex)
             {

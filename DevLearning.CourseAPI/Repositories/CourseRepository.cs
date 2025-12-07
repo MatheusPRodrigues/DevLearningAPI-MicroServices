@@ -1,8 +1,7 @@
 ﻿using DevLearning.API.Models.DTOs.Course;
-using DevLearning.CourseAPI.Data;
 using DevLearning.CourseAPI.Repositories.Interfaces;
 using DevLearning.Models;
-using DevLearning.Models.DTOs.Category;
+using DevLearning.Models.DTOs.Course;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -11,10 +10,9 @@ namespace DevLearning.CourseAPI.Repositories
     public class CourseRepository : ICourseRepository
     {
         private readonly IMongoCollection<Course> _collection;
-        private readonly IMongoCollection<Author> _authorCollection;  
+        private readonly IMongoCollection<Author> _authorCollection;
         private readonly IMongoCollection<Category> _categoryCollection;
         private readonly ILogger<CourseRepository> _logger;
-        private readonly ConnectionDB _connection;
 
         public CourseRepository(IMongoDatabase database, ILogger<CourseRepository> logger)
         {
@@ -28,7 +26,7 @@ namespace DevLearning.CourseAPI.Repositories
         {
             try
             {
-                await _connection.GetMongoCollection().InsertOneAsync(course);
+                await _collection.InsertOneAsync(course);
             }
             catch (MongoWriteException ex)
             {
@@ -44,10 +42,22 @@ namespace DevLearning.CourseAPI.Repositories
         {
             try
             {
-                var filter = Builders<Course>.Filter.Eq("CategoryId", category)
-                           & Builders<Course>.Filter.Eq("Active", true);
-                return (await _connection.GetMongoCollection().Find(filter).ToListAsync()).
-                    Select(c => new CourseResponseDTO
+                FilterDefinition<Course> filter;
+
+                if (string.IsNullOrWhiteSpace(category))
+                {
+                    filter = Builders<Course>.Filter.Eq(c => c.Active, true);
+                }
+                else
+                {
+                    var categoryId = Guid.Parse(category);
+                    filter = Builders<Course>.Filter.Eq(c => c.CategoryId, categoryId)
+                           & Builders<Course>.Filter.Eq(c => c.Active, true);
+                }
+
+                var courses = await _collection.Find(filter).ToListAsync();
+
+                return courses.Select(c => new CourseResponseDTO
                 {
                     CourseId = c.Id.ToString(),
                     Tag = c.Tag,
@@ -61,14 +71,12 @@ namespace DevLearning.CourseAPI.Repositories
                     Active = c.Active,
                     Free = c.Free,
                     Featured = c.Featured,
-                    AuthorName = c.AuthorId.ToString(),
-                    CategoryName = c.CategoryId.ToString(),
+                    AuthorId = c.AuthorId.ToString(),
+                    CategoryId = c.CategoryId.ToString(),
+                    AuthorName = null,
+                    CategoryName = null,
                     Tags = c.Tags
                 }).ToList();
-            }
-            catch (MongoWriteException ex)
-            {
-                throw new Exception(ex.Message);
             }
             catch (Exception ex)
             {
@@ -80,44 +88,8 @@ namespace DevLearning.CourseAPI.Repositories
         {
             try
             {
-                var filter = Builders<Course>.Filter.Eq("Title", title);
-                var course = await _connection.mongoCollection.Find(filter).FirstOrDefaultAsync();
-
-                if (course == null) return null;
-
-                return new CourseResponseDTO
-                {
-                    CourseId = course.Id.ToString(),  
-                    Tag = course.Tag,
-                    Title = course.Title,
-                    Summary = course.Summary,
-                    Url = course.Url,
-                    Level = course.Level,
-                    DurationInMinutes = course.DurationInMinutes,
-                    CreateDate = course.CreateDate,
-                    LastUpdateDate = course.LastUpdateDate,
-                    Active = course.Active,
-                    Free = course.Free,
-                    Featured = course.Featured,
-                    AuthorName = course.AuthorId.ToString(),  
-                    CategoryName = course.CategoryId.ToString(), 
-                    Tags = course.Tags
-                };
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao buscar curso por título {Title}", title);
-                throw;
-            }
-        }
-
-        public async Task<CourseResponseDTO> GetOneCourseByIdAsync(string id) 
-        {
-            try
-            {
-                var objectId = ObjectId.Parse(id);
-                var filter = Builders<Course>.Filter.Eq("_id", objectId);
-                var course = await _connection.mongoCollection.Find(filter).FirstOrDefaultAsync();
+                var filter = Builders<Course>.Filter.Eq(c => c.Title, title);
+                var course = await _collection.Find(filter).FirstOrDefaultAsync();
 
                 if (course == null) return null;
 
@@ -135,8 +107,48 @@ namespace DevLearning.CourseAPI.Repositories
                     Active = course.Active,
                     Free = course.Free,
                     Featured = course.Featured,
-                    AuthorName = course.AuthorId.ToString(),
-                    CategoryName = course.CategoryId.ToString(),
+                    AuthorId = course.AuthorId.ToString(),
+                    CategoryId = course.CategoryId.ToString(),
+                    AuthorName = null,
+                    CategoryName = null,
+                    Tags = course.Tags
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar curso por título {Title}", title);
+                throw;
+            }
+        }
+
+        public async Task<CourseResponseDTO> GetOneCourseByIdAsync(ObjectId id)
+        {
+            try
+            {
+                var guidId = new Guid(id.ToString());
+                var filter = Builders<Course>.Filter.Eq(c => c.Id, guidId);
+                var course = await _collection.Find(filter).FirstOrDefaultAsync();
+
+                if (course == null) return null;
+
+                return new CourseResponseDTO
+                {
+                    CourseId = course.Id.ToString(),
+                    Tag = course.Tag,
+                    Title = course.Title,
+                    Summary = course.Summary,
+                    Url = course.Url,
+                    Level = course.Level,
+                    DurationInMinutes = course.DurationInMinutes,
+                    CreateDate = course.CreateDate,
+                    LastUpdateDate = course.LastUpdateDate,
+                    Active = course.Active,
+                    Free = course.Free,
+                    Featured = course.Featured,
+                    AuthorId = course.AuthorId.ToString(),
+                    CategoryId = course.CategoryId.ToString(),
+                    AuthorName = null,
+                    CategoryName = null,
                     Tags = course.Tags
                 };
             }
@@ -147,28 +159,6 @@ namespace DevLearning.CourseAPI.Repositories
             }
         }
 
-
-        public async Task UpdateCourseByTitleAsync(string title, bool free, bool featured, DateTime lastUpdateDate)
-        {
-            try
-            {
-                var filter = Builders<Course>.Filter.Eq(c => c.Title, title);
-                var update = Builders<Course>.Update
-                    .Set(c => c.Free, free)
-                    .Set(c => c.Featured, featured)
-                    .Set(c => c.LastUpdateDate, lastUpdateDate);
-
-                await _connection.GetMongoCollection().UpdateOneAsync(filter, update);
-            }
-            catch (MongoWriteException ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
         public async Task UpdateActiveCourseByTitleAsync(string title, bool active, DateTime lastUpdateDate)
         {
             try
@@ -178,11 +168,7 @@ namespace DevLearning.CourseAPI.Repositories
                     .Set(c => c.Active, active)
                     .Set(c => c.LastUpdateDate, lastUpdateDate);
 
-                await _connection.GetMongoCollection().UpdateOneAsync(filter, update);
-            }
-            catch (MongoWriteException ex)
-            {
-                throw new Exception(ex.Message);
+                await _collection.UpdateOneAsync(filter, update);
             }
             catch (Exception ex)
             {
@@ -194,54 +180,9 @@ namespace DevLearning.CourseAPI.Repositories
         {
             try
             {
-                var filter = Builders<Course>.Filter.Eq("CategoryId", categoryId)
-                           & Builders<Course>.Filter.Eq("Active", true);
-
-                var courses = await _collection.Find(filter)
-                    .SortByDescending(c => c.CreateDate)
-                    .ToListAsync();
-
-                var result = new List<CourseResponseDTO>();
-                foreach (var course in courses)
-                {
-                    var author = await _authorCollection.Find(a => a.Id == course.AuthorId).FirstOrDefaultAsync();
-                    var category = await _categoryCollection.Find(cat => cat.Id == course.CategoryId)
-                        .FirstOrDefaultAsync();
-
-                    result.Add(new CourseResponseDTO
-                    {
-                        CourseId = course.Id.ToString(),
-                        Tag = course.Tag,
-                        Title = course.Title,
-                        Summary = course.Summary,
-                        Url = course.Url,
-                        Level = course.Level,
-                        DurationInMinutes = course.DurationInMinutes,
-                        CreateDate = course.CreateDate,
-                        LastUpdateDate = course.LastUpdateDate,
-                        Active = course.Active,
-                        Free = course.Free,
-                        Featured = course.Featured,
-                        AuthorName = author?.Name,
-                        CategoryName = category?.Title,  
-                        Tags = course.Tags  
-                    });
-                }
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao buscar cursos por categoria {CategoryId}", categoryId);
-                throw;
-            }
-        }
-
-        public async Task<List<CourseResponseDTO>> GetCoursesByAuthorAsync(ObjectId authorId)
-        {
-            try
-            {
-                var filter = Builders<Course>.Filter.Eq("AuthorId", authorId)
-                           & Builders<Course>.Filter.Eq("Active", true);
+                var guidCategory = new Guid(categoryId.ToString());
+                var filter = Builders<Course>.Filter.Eq(c => c.CategoryId, guidCategory)
+                           & Builders<Course>.Filter.Eq(c => c.Active, true);
 
                 var courses = await _collection.Find(filter)
                     .SortByDescending(c => c.CreateDate)
@@ -267,9 +208,59 @@ namespace DevLearning.CourseAPI.Repositories
                         Active = course.Active,
                         Free = course.Free,
                         Featured = course.Featured,
+                        AuthorId = course.AuthorId.ToString(),
+                        CategoryId = course.CategoryId.ToString(),
                         AuthorName = author?.Name,
                         CategoryName = category?.Title,
-                        Tags = string.Join(", ", course.Tags)
+                        Tags = course.Tags
+                    });
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao buscar cursos por categoria {CategoryId}", categoryId);
+                throw;
+            }
+        }
+
+        public async Task<List<CourseResponseDTO>> GetCoursesByAuthorAsync(ObjectId authorId)
+        {
+            try
+            {
+                var guidAuthor = new Guid(authorId.ToString());
+                var filter = Builders<Course>.Filter.Eq(c => c.AuthorId, guidAuthor)
+                           & Builders<Course>.Filter.Eq(c => c.Active, true);
+
+                var courses = await _collection.Find(filter)
+                    .SortByDescending(c => c.CreateDate)
+                    .ToListAsync();
+
+                var result = new List<CourseResponseDTO>();
+                foreach (var course in courses)
+                {
+                    var author = await _authorCollection.Find(a => a.Id == course.AuthorId).FirstOrDefaultAsync();
+                    var category = await _categoryCollection.Find(cat => cat.Id == course.CategoryId).FirstOrDefaultAsync();
+
+                    result.Add(new CourseResponseDTO
+                    {
+                        CourseId = course.Id.ToString(),
+                        Tag = course.Tag,
+                        Title = course.Title,
+                        Summary = course.Summary,
+                        Url = course.Url,
+                        Level = course.Level,
+                        DurationInMinutes = course.DurationInMinutes,
+                        CreateDate = course.CreateDate,
+                        LastUpdateDate = course.LastUpdateDate,
+                        Active = course.Active,
+                        Free = course.Free,
+                        Featured = course.Featured,
+                        AuthorId = course.AuthorId.ToString(),
+                        CategoryId = course.CategoryId.ToString(),
+                        AuthorName = author?.Name,
+                        CategoryName = category?.Title,
+                        Tags = course.Tags
                     });
                 }
                 return result;
@@ -278,6 +269,25 @@ namespace DevLearning.CourseAPI.Repositories
             {
                 _logger.LogError(ex, "Erro ao buscar cursos por autor {AuthorId}", authorId);
                 throw;
+            }
+        }
+
+        public async Task UpdateCourseByTitleAsync(string title, CourseUpdateDTO update)
+        {
+            try
+            {
+                var filter = Builders<Course>.Filter.Eq(c => c.Title, title);
+
+                var updateDef = Builders<Course>.Update
+                    .Set(c => c.Free, update.Free)
+                    .Set(c => c.Featured, update.Featured)
+                    .Set(c => c.LastUpdateDate, DateTime.UtcNow);
+
+                await _collection.UpdateOneAsync(filter, updateDef);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }

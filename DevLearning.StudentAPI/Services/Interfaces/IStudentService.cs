@@ -12,5 +12,6 @@ namespace DevLearning.StudentAPI.Services.Interfaces
         public Task<StudentResponseDTO> GetStudentByEmail(string email);
         public Task UpdateStudentCourse(Guid studentId, string courseId, StudentCourseRequestUpdateDTO studentCourse);
         public Task UpdateStudent(StudentRequestUpdateDTO student, string id);
+        public Task<int> GetCountStudentCourse(string courseId);
     }
 }
