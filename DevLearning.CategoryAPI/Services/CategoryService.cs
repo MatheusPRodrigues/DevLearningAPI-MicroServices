@@ -14,6 +14,39 @@ namespace DevLearning.CategoryAPI.Services
             _categoryRepository = categoryRepository;
         }
 
+        //private async Task<bool> CategoryHasCoursesAsync(Guid categoryId)
+        //{
+        //    var response = await _httpClient.GetAsync($"/api/v1/Course/category/{categoryId}");
+
+        //    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        //        return false;
+
+        //    if (response.IsSuccessStatusCode)
+        //        return true;
+
+        //    response.EnsureSuccessStatusCode();
+        //    return false;
+        //}
+
+        private async Task<bool> CategoryHasCoursesAsync(Guid categoryId)
+        {
+            string categoryIdString = categoryId.ToString("N").Substring(0, 24);
+
+            var response = await _httpClient.GetAsync($"/api/v1/Course/category/{categoryIdString}");
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                return false;
+
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                return false;
+
+            if (response.IsSuccessStatusCode)
+                return true;
+
+            response.EnsureSuccessStatusCode();
+            return false;
+        }
+
         private string GenerateUrl(string title)
         {
             string newUrl = title.ToLower().Replace(" ", "-");
@@ -121,6 +154,22 @@ namespace DevLearning.CategoryAPI.Services
 
             await _categoryRepository.UpdateCategoryAsync(existing);
         }
+
+        //public async Task DeleteCategoryAsync(Guid id)
+        //{
+        //    if (id == Guid.Empty)
+        //        throw new ArgumentException("Id inválido.");
+
+        //    var existing = await _categoryRepository.GetCategoryByIdAsync(id);
+
+        //    if (existing == null)
+        //        throw new KeyNotFoundException("Categoria não encontrada.");
+
+        //    if (await CategoryHasCoursesAsync(id))
+        //        throw new ArgumentException("Não é possível deletar uma categoria que possui cursos associados.");
+
+        //    await _categoryRepository.DeleteCategoryAsync(id);
+        //}
 
         public async Task DeleteCategoryAsync(Guid id)
         {
