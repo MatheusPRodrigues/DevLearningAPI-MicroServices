@@ -21,7 +21,7 @@ namespace DevLearning.AuthorAPI.Services
 
         private async Task<bool> AuthorHasCoursesAsync(Guid authorId)
         {
-            var response = await _courseClient.GetAsync($"/api/v1/course/author/{authorId}");
+            var response = await _courseClient.GetAsync($"author/{authorId}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return false;

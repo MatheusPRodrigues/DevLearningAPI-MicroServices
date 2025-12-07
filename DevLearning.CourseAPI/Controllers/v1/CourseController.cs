@@ -1,5 +1,6 @@
 ﻿using DevLearning.API.Models.DTOs.Course;
 using DevLearning.CourseAPI.Services;
+using DevLearning.CourseAPI.Services.Interfaces;
 using DevLearning.Models.DTOs.Course;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,10 @@ namespace DevLearning.CourseAPI.Controllers.v1
     [ApiController]
     public class CourseController : ControllerBase
     {
-        private CourseService _courseService;
+        private ICourseService _courseService;
         private readonly ILogger<CourseController> _logger;
 
-        public CourseController(CourseService service, ILogger<CourseController> logger)
+        public CourseController(ICourseService service, ILogger<CourseController> logger)
         {
             _courseService = service;
             _logger = logger;
@@ -135,7 +136,7 @@ namespace DevLearning.CourseAPI.Controllers.v1
         {
             try
             {
-                var id = ObjectId.Parse(categoryId);
+                var id = Guid.Parse(categoryId);
                 var courses = await _courseService.GetCoursesByCategoryAsync(id);
                 if (!courses.Any())
                     return NotFound(new { message = "Nenhum curso encontrado para esta categoria" });
@@ -161,7 +162,7 @@ namespace DevLearning.CourseAPI.Controllers.v1
         {
             try
             {
-                var id = ObjectId.Parse(authorId);
+                var id = Guid.Parse(authorId);
                 var courses = await _courseService.GetCoursesByAuthorAsync(id);
                 if (!courses.Any())
                     return NotFound(new { message = "Nenhum curso encontrado para este autor" });

@@ -9,8 +9,8 @@ namespace DevLearning.CourseAPI.Repositories.Interfaces
     {
             Task CreateCourseAsync(Course course);
             Task<List<CourseResponseDTO>> GetAllCoursesAsync(string category);
-            Task<List<CourseResponseDTO>> GetCoursesByCategoryAsync(ObjectId categoryId);  
-            Task<List<CourseResponseDTO>> GetCoursesByAuthorAsync(ObjectId authorId);      
+            Task<List<CourseResponseDTO>> GetCoursesByCategoryAsync(Guid categoryId);  
+            Task<List<CourseResponseDTO>> GetCoursesByAuthorAsync(Guid authorId);      
             Task<CourseResponseDTO> GetOneCourseByIdAsync(ObjectId id);
             Task<CourseResponseDTO> GetOneCourseByTitleAsync(string title);
             Task UpdateActiveCourseByTitleAsync(string title, bool active, DateTime lastUpdateDate);

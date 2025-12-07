@@ -43,7 +43,7 @@ namespace DevLearning.CourseAPI.Services
                 throw new Exception("Categoria inexistente!");
 
             var newCourse = new Course(
-                Guid.NewGuid(),
+                ObjectId.GenerateNewId(),
                 course.Tag,
                 course.Title,
                 course.Summary,
@@ -133,16 +133,16 @@ namespace DevLearning.CourseAPI.Services
             }
         }
 
-        public async Task<List<CourseResponseDTO>> GetCoursesByCategoryAsync(ObjectId categoryId)
+        public async Task<List<CourseResponseDTO>> GetCoursesByCategoryAsync(Guid categoryId)
         {
-            if (categoryId == ObjectId.Empty)
+            if (categoryId == Guid.Empty)
                 throw new ArgumentException("ID da categoria inválido");
             return await _courseRepository.GetCoursesByCategoryAsync(categoryId);
         }
 
-        public async Task<List<CourseResponseDTO>> GetCoursesByAuthorAsync(ObjectId authorId)
+        public async Task<List<CourseResponseDTO>> GetCoursesByAuthorAsync(Guid authorId)
         {
-            if (authorId == ObjectId.Empty)
+            if (authorId == Guid.Empty)
                 throw new ArgumentException("ID do autor inválido");
             return await _courseRepository.GetCoursesByAuthorAsync(authorId);
         }

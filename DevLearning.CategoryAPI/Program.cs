@@ -10,10 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddHttpClient("CourseAPI", client =>
+builder.Services.AddHttpClient("CourseAPI", c =>
 {
-    client.BaseAddress = new Uri("http://localhost:5006");
-});
+    c.BaseAddress = new Uri("https://localhost:5007/api/v1/course/");
+}).ConfigurePrimaryHttpMessageHandler(() =>
+    new HttpClientHandler
+    {
+        ServerCertificateCustomValidationCallback =
+            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+    });
 
 builder.Services.AddSingleton<ICategoryService, CategoryService>();
 builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();

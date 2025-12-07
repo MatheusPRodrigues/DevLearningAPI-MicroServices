@@ -18,7 +18,7 @@ namespace DevLearning.CategoryAPI.Services
 
         private async Task<bool> CategoryHasCoursesAsync(Guid categoryId)
         {
-            var response = await _httpClient.GetAsync($"/api/v1/Course/category/{categoryId}");
+            var response = await _httpClient.GetAsync($"category/{categoryId}");
 
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 return false;

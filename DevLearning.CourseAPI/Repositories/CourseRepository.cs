@@ -125,8 +125,8 @@ namespace DevLearning.CourseAPI.Repositories
         {
             try
             {
-                var guidId = new Guid(id.ToString());
-                var filter = Builders<Course>.Filter.Eq(c => c.Id, guidId);
+                var objectId = new ObjectId(id.ToString());
+                var filter = Builders<Course>.Filter.Eq(c => c.Id, objectId);
                 var course = await _collection.Find(filter).FirstOrDefaultAsync();
 
                 if (course == null) return null;
@@ -176,12 +176,11 @@ namespace DevLearning.CourseAPI.Repositories
             }
         }
 
-        public async Task<List<CourseResponseDTO>> GetCoursesByCategoryAsync(ObjectId categoryId)
+        public async Task<List<CourseResponseDTO>> GetCoursesByCategoryAsync(Guid categoryId)
         {
             try
             {
-                var guidCategory = new Guid(categoryId.ToString());
-                var filter = Builders<Course>.Filter.Eq(c => c.CategoryId, guidCategory)
+                var filter = Builders<Course>.Filter.Eq(c => c.CategoryId, categoryId)
                            & Builders<Course>.Filter.Eq(c => c.Active, true);
 
                 var courses = await _collection.Find(filter)
@@ -224,7 +223,7 @@ namespace DevLearning.CourseAPI.Repositories
             }
         }
 
-        public async Task<List<CourseResponseDTO>> GetCoursesByAuthorAsync(ObjectId authorId)
+        public async Task<List<CourseResponseDTO>> GetCoursesByAuthorAsync(Guid authorId)
         {
             try
             {
