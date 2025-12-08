@@ -6,6 +6,6 @@
         public string Title { get; init; }        
         public string Description { get; init; }
         public byte Order { get; init; }
-        public string CourseTitle { get; init; }
+        public string CourseTitle { get; set; }
     }
 }

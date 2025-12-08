@@ -207,7 +207,6 @@ namespace DevLearning.CareerAPI.Repository
             }
         }
 
-
         public async Task<List<CareerWhitCareerItemResponseDTO>> GetAllCareerWithCareerItem()
         {
             try
@@ -227,7 +226,6 @@ namespace DevLearning.CareerAPI.Repository
                 ci.Title,
                 ci.Description,
                 ci.[Order],
-                crs.Title AS CourseTitle
             FROM Career c
             LEFT JOIN CareerItem ci ON ci.CareerId = c.Id
             ORDER BY c.Title, ci.[Order];";

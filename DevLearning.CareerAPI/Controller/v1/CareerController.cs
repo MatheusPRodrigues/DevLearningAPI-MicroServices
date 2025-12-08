@@ -1,21 +1,22 @@
 ﻿using DevLearning.API.Services;
 using DevLearning.CareerAPI.Service;
+using DevLearning.CareerAPI.Service.Interface;
 using DevLearning.Models.DTOs.Carrer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevLearning.CareerAPI.Controller.v1
 {
-    [Route("api/v1[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CareerController : ControllerBase
     {
-        public readonly CareerService careerService;
+        public readonly ICareerService _careerService;
         private readonly ILogger<CareerController> logger;
 
-        public CareerController(ILogger<CareerController> logger, CareerService careerService)
+        public CareerController(ILogger<CareerController> logger, ICareerService careerService)
         {
-            this.careerService = careerService;
+            this._careerService = careerService;
             this.logger = logger;
         }
 
@@ -25,7 +26,7 @@ namespace DevLearning.CareerAPI.Controller.v1
         {
             try
             {
-                await careerService.CreateCareerAsync(careerDTO);
+                await _careerService.CreateCareerAsync(careerDTO);
                 return Created();
             }
             catch (Exception ex)
@@ -40,7 +41,7 @@ namespace DevLearning.CareerAPI.Controller.v1
         {
             try
             {
-                var careers = await careerService.GetAllCareerAsync();
+                var careers = await _careerService.GetAllCareerAsync();
                 return Ok(careers);
             }
             catch (Exception ex)
@@ -55,7 +56,7 @@ namespace DevLearning.CareerAPI.Controller.v1
         {
             try
             {
-                var careerData = await careerService.GetCareerByIdAsync(careerId);
+                var careerData = await _careerService.GetCareerByIdAsync(careerId);
                 if (careerData == null)
                 {
                     return NotFound();
@@ -74,7 +75,7 @@ namespace DevLearning.CareerAPI.Controller.v1
         {
             try
             {
-                var result = await careerService.UpdateCareerAsync(careerId, careerDTO);
+                var result = await _careerService.UpdateCareerAsync(careerId, careerDTO);
                 if (result is false)
                 {
                     return NotFound();
@@ -94,7 +95,7 @@ namespace DevLearning.CareerAPI.Controller.v1
         {
             try
             {
-                var result = await careerService.DeleteCareerAsync(careerId);
+                var result = await _careerService.DeleteCareerAsync(careerId);
                 if (result is false)
                 {
                     return NotFound();

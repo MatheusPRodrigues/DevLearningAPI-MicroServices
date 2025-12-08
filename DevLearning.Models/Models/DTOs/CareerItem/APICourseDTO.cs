@@ -10,12 +10,12 @@ namespace DevLearning.Models.Models.DTOs.CareerItem
     public class APICourseDTO
     {
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; init; }
 
         [JsonPropertyName("title")]
-        public string Title { get; set; }
+        public string Title { get; init; }
 
         [JsonPropertyName("durationInMinutes")]
-        public int DurationInMinutes { get; set; }
+        public int DurationInMinutes { get; init; }
     }
 }
