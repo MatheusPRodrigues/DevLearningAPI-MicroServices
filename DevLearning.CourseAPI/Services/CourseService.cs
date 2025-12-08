@@ -90,11 +90,11 @@ namespace DevLearning.CourseAPI.Services
             return courses;
         }
 
-        public async Task<CourseResponseDTO> GetOneCourseByTitleAsync(string title)
+        public async Task<CourseResponseDTO> GetOneCourseByTitleAsync(CourseRequestTitleDTO dto)
         {
             try
             {
-                return await _courseRepository.GetOneCourseByTitleAsync(title);
+                return await _courseRepository.GetOneCourseByTitleAsync(dto.Title);
             }
             catch (Exception ex)
             {
