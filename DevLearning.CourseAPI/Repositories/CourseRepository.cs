@@ -208,8 +208,8 @@ namespace DevLearning.CourseAPI.Repositories
                         Featured = course.Featured,
                         AuthorId = course.AuthorId.ToString(),
                         CategoryId = course.CategoryId.ToString(),
-                        AuthorName = null,      // preenchido no service
-                        CategoryName = null,    // preenchido no service
+                        AuthorName = null,
+                        CategoryName = null,
                         Tags = course.Tags
                     });
                 }
