@@ -3,6 +3,6 @@
     public enum FavoriteType : byte
     {
         Yes = 1,
-        No = 2
+        No = 0
     }
 }

@@ -13,7 +13,5 @@ namespace DevLearning.API.Models.DTOs.Author
         public string Email { get; set; }
         public string TypeLabel => Type.ToString();
         public AuthorType Type { get; set; }
-
- 
     }
 }

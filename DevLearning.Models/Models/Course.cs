@@ -1,12 +1,13 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using System.Text.Json.Serialization;
 using DevLearning.Models.Enums.Course;
+using MongoDB.Bson;
 
 namespace DevLearning.Models
 {
     public class Course
     {
-        public Guid Id { get; private set; }
+        public ObjectId Id { get; private set; }
         public string Tag { get; private set; }
         public string Title { get; private set; }
         public string Summary { get; private set; }
@@ -27,7 +28,7 @@ namespace DevLearning.Models
 
         [JsonConstructor]
         public Course(
-            Guid id,
+            ObjectId id,
             string tag,
             string title,
             string summary,
@@ -60,33 +61,5 @@ namespace DevLearning.Models
             Tags = tags;
         }
 
-        //[JsonConstructor]
-        //public Course(
-        //    string tag,
-        //    string title,
-        //    string summary,
-        //    string url,
-        //    CourseLevel level,
-        //    int durationInMinutes,
-        //    Guid authorId,
-        //    Guid categoryId,
-        //    string tags)
-        //{
-        //    Id = Guid.NewGuid();
-        //    Tag = tag;
-        //    Title = title;
-        //    Summary = summary;
-        //    Url = url;
-        //    Level = level;
-        //    DurationInMinutes = durationInMinutes;
-        //    CreateDate = DateTime.UtcNow;
-        //    LastUpdateDate = DateTime.UtcNow;
-        //    Active = true;
-        //    Free = false;
-        //    Featured = false;
-        //    AuthorId = authorId;
-        //    CategoryId = categoryId;
-        //    Tags = tags;
-        //}
     }
 }
