@@ -1,0 +1,856 @@
+{
+	"info": {
+		"_postman_id": "c145c80f-5c4b-47e1-b3b4-f2fe0d21d230",
+		"name": "DevLearningAPIms",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46909200",
+		"_collection_link": "https://matheusrodrigues-5386266.postman.co/workspace/TestAPI~ef08a6b9-db45-457e-8595-47154db852f1/collection/46909200-c145c80f-5c4b-47e1-b3b4-f2fe0d21d230?action=share&source=collection_link&creator=46909200"
+	},
+	"item": [
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "Inserindo estudante",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"José\",\r\n    \"Email\": \"jose@gmail.com\",\r\n    \"Document\": \"49389849141\",\r\n    \"Phone\": \"119974398441\",\r\n    \"Birthdate\": \"2002-05-13\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/student",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos estudantes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/student/all",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"student",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar estudante por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/student/743facd3-afc8-4ff9-967c-e8cc4fa0b3ca",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"student",
+								"743facd3-afc8-4ff9-967c-e8cc4fa0b3ca"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar estudante por Documento",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"document\": \"41444934319\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/student/get-by-document/",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"student",
+								"get-by-document",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar estudante por Email",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"bruno@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/student/get-by-email",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"student",
+								"get-by-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificando Estudante",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Email\": \"jose@gmail\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/student/668e62a4-bf6a-44cd-96bb-c4316ea1b1af",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"student",
+								"668e62a4-bf6a-44cd-96bb-c4316ea1b1af"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificando o Progresso do Estudante no Curso e Favorito",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Progress\": 52,\r\n    \"Favorite\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/student/743facd3-afc8-4ff9-967c-e8cc4fa0b3ca/courses/6935d2857d2c591d85fcbdfb",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"student",
+								"743facd3-afc8-4ff9-967c-e8cc4fa0b3ca",
+								"courses",
+								"6935d2857d2c591d85fcbdfb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inserindo Estudante em Curso",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Favorite\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/api/v1/student/668e62a4-bf6a-44cd-96bb-c4316ea1b1af/courses/693645571f40a6d1d90c5deb",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"student",
+								"668e62a4-bf6a-44cd-96bb-c4316ea1b1af",
+								"courses",
+								"693645571f40a6d1d90c5deb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCountStudentsInCourse",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/student/CountStudentsInCourse/6935d2857d2c591d85fcbdfb",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"student",
+								"CountStudentsInCourse",
+								"6935d2857d2c591d85fcbdfb"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Course",
+			"item": [
+				{
+					"name": "GetAllCourses",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Programação\",\r\n  \"url\": \"programacao\",\r\n  \"summary\": \"Cursos de programação\",\r\n  \"order\": 1,\r\n  \"description\": \"Tudo sobre programação\",\r\n  \"featured\": true\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5007/api/v1/Course",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5007",
+							"path": [
+								"api",
+								"v1",
+								"Course"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCourseById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Pestana3213123\",\r\n    \"Title\": \"Título 51231231\",\r\n    \"Image\": \"Imagem-512312312\",\r\n    \"Bio\": \"Uma bio aqui123123\",\r\n    \"Url\": \"https:umUrlaqui12312\",\r\n    \"Email\": \"pestana@email.com124124123\",\r\n    \"Type\": true\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5007/api/v1/course/6935d2857d2c591d85fcbdfb",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5007",
+							"path": [
+								"api",
+								"v1",
+								"course",
+								"6935d2857d2c591d85fcbdfb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByTitle",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Title\": \"Curso de C#\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5007/api/v1/Course/get-by-title/",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5007",
+							"path": [
+								"api",
+								"v1",
+								"Course",
+								"get-by-title",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCourseByCategory",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Title\": \"Curso de Go\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5007/api/v1/Course/category/5ba2e3af-859b-4a53-bc92-f837c24a90eb",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5007",
+							"path": [
+								"api",
+								"v1",
+								"Course",
+								"category",
+								"5ba2e3af-859b-4a53-bc92-f837c24a90eb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCourseByAuthor",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Title\": \"Curso de Go\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5007/api/v1/Course/author/c09dcf01-768a-47b5-89af-4c1ed121a4bb",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5007",
+							"path": [
+								"api",
+								"v1",
+								"Course",
+								"author",
+								"c09dcf01-768a-47b5-89af-4c1ed121a4bb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateCourse",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tag\": \"curso-teste\",\r\n  \"title\": \"Curso de Teste\",\r\n  \"summary\": \"Aprenda Teste do zero ao avançado\",\r\n  \"url\": \"https://meusite.com/curso-teste\",\r\n  \"level\": 1,\r\n  \"durationInMinutes\": 150,\r\n  \"authorId\": \"c09dcf01-768a-47b5-89af-4c1ed121a4bb\",\r\n  \"categoryId\": \"5ba2e3af-859b-4a53-bc92-f837c24a90eb\",\r\n  \"tags\": \"teste,backend\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5007/api/v1/Course",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5007",
+							"path": [
+								"api",
+								"v1",
+								"Course"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCourseByTitle",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"Active\": false,\r\n  \"Free\": true,\r\n  \"Featured\": true \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5007/api/v1/Course/Curso de C%23",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5007",
+							"path": [
+								"api",
+								"v1",
+								"Course",
+								"Curso de C%23"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateActiveCourseByTitle",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Active\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5007/api/v1/Course/Active/Curso de C%23",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5007",
+							"path": [
+								"api",
+								"v1",
+								"Course",
+								"Active",
+								"Curso de C%23"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Author",
+			"item": [
+				{
+					"name": "CreateAuthor Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Cleiton3213123\",\r\n    \"Title\": \"Título 61231231\",\r\n    \"Image\": \"Imagem-852312312\",\r\n    \"Bio\": \"Uma bio aqui1298923113\",\r\n    \"Url\": \"https:umUrlaqui932321321\",\r\n    \"Email\": \"cleiton@email.com124124123\",\r\n    \"Type\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/v1/author",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"author"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllAuthors Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/api/v1/author",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"author"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAuthorById Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5001/api/v1/author/dd4fb0e0-bd03-4fb4-b870-88cfe17674e7",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"author",
+								"dd4fb0e0-bd03-4fb4-b870-88cfe17674e7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutUpdateAuthor Copy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"Name\": \"Ana Carolina\",\r\n    \"Title\": \"Título Novo\",\r\n    \"Image\": \"Imagem-Nova\",\r\n    \"Bio\": \"Uma bio nova de novo e de novo\"\r\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/v1/author/dd4fb0e0-bd03-4fb4-b870-88cfe17674e7",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"author",
+								"dd4fb0e0-bd03-4fb4-b870-88cfe17674e7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PatchUpdateAuthor Copy",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"Title\": \"Novo titulo\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/v1/author/dd4fb0e0-bd03-4fb4-b870-88cfe17674e7",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"author",
+								"dd4fb0e0-bd03-4fb4-b870-88cfe17674e7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateType Copy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "2",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5001/api/v1/author/type/104dbd72-1900-423a-aeae-d40a6e0a67ed",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"v1",
+								"author",
+								"type",
+								"104dbd72-1900-423a-aeae-d40a6e0a67ed"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "PostCategory Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Nova Categoria4\",\r\n    \"summary\": \"Descrição da categoria4\",\r\n    \"order\": 1,\r\n    \"description\": \"Texto detalhado da categoria4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5005/api/v1/Category",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"v1",
+								"Category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllCategories Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Programação\",\r\n  \"url\": \"programacao\",\r\n  \"summary\": \"Cursos de programação\",\r\n  \"order\": 1,\r\n  \"description\": \"Tudo sobre programação\",\r\n  \"featured\": true\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5005/api/v1/Category",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"v1",
+								"Category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCategoryById Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Programação\",\r\n  \"url\": \"programacao\",\r\n  \"summary\": \"Cursos de programação\",\r\n  \"order\": 1,\r\n  \"description\": \"Tudo sobre programação\",\r\n  \"featured\": true\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5005/api/v1/Category/96652404-25BD-40F3-9BF9-2E93F084DB17",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"v1",
+								"Category",
+								"96652404-25BD-40F3-9BF9-2E93F084DB17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutCategory Copy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"order\": 3,\r\n    \"featured\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:5005/api/v1/Category/96652404-25BD-40F3-9BF9-2E93F084DB17",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"v1",
+								"Category",
+								"96652404-25BD-40F3-9BF9-2E93F084DB17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCategory Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"order\": 3,\r\n    \"featured\": true\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:5005/api/v1/Category/96652404-25bd-40f3-9bf9-2e93f084db17",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"api",
+								"v1",
+								"Category",
+								"96652404-25bd-40f3-9bf9-2e93f084db17"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -5,4 +5,5 @@
   <Project Path="DevLearning.CourseAPI/DevLearning.CourseAPI.csproj" />
   <Project Path="DevLearning.Models/DevLearning.Models.csproj" />
   <Project Path="DevLearning.StudentAPI/DevLearning.StudentAPI.csproj" />
+  <Project Path="Utils/Utils.csproj" Id="6d582850-b068-41a8-8ec6-4c447dc1760e" />
 </Solution>
