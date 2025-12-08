@@ -105,8 +105,8 @@ namespace DevLearning.CourseAPI.Repositories
             {
                 var filter = Builders<Course>.Filter.Eq(c => c.Title, title);
                 var course = await _collection.Find(filter).FirstOrDefaultAsync();
-                var author = await _authorCollection.Find(a => a.Id == course.AuthorId).FirstOrDefaultAsync();
-                var category = await _categoryCollection.Find(cat => cat.Id == course.CategoryId).FirstOrDefaultAsync();
+                //var author = await _authorCollection.Find(a => a.Id == course.AuthorId).FirstOrDefaultAsync();
+                //var category = await _categoryCollection.Find(cat => cat.Id == course.CategoryId).FirstOrDefaultAsync();
 
                 if (course == null) return null;
 
@@ -126,8 +126,8 @@ namespace DevLearning.CourseAPI.Repositories
                     Featured = course.Featured,
                     AuthorId = course.AuthorId.ToString(),
                     CategoryId = course.CategoryId.ToString(),
-                    AuthorName = author?.Name,
-                    CategoryName = category?.Title,
+                    AuthorName = null,
+                    CategoryName = null,
                     Tags = course.Tags
                 };
             }
@@ -145,8 +145,8 @@ namespace DevLearning.CourseAPI.Repositories
                 var objectId = new ObjectId(id.ToString());
                 var filter = Builders<Course>.Filter.Eq(c => c.Id, objectId);
                 var course = await _collection.Find(filter).FirstOrDefaultAsync();
-                var author = await _authorCollection.Find(a => a.Id == course.AuthorId).FirstOrDefaultAsync();
-                var category = await _categoryCollection.Find(cat => cat.Id == course.CategoryId).FirstOrDefaultAsync();
+                //var author = await _authorCollection.Find(a => a.Id == course.AuthorId).FirstOrDefaultAsync();
+                //var category = await _categoryCollection.Find(cat => cat.Id == course.CategoryId).FirstOrDefaultAsync();
 
                 if (course == null) return null;
 
@@ -166,8 +166,8 @@ namespace DevLearning.CourseAPI.Repositories
                     Featured = course.Featured,
                     AuthorId = course.AuthorId.ToString(),
                     CategoryId = course.CategoryId.ToString(),
-                    AuthorName = author?.Name,
-                    CategoryName = category?.Title,
+                    AuthorName = null,
+                    CategoryName = null,
                     Tags = course.Tags
                 };
             }
@@ -209,8 +209,8 @@ namespace DevLearning.CourseAPI.Repositories
                 var result = new List<CourseResponseDTO>();
                 foreach (var course in courses)
                 {
-                    var author = await _authorCollection.Find(a => a.Id == course.AuthorId).FirstOrDefaultAsync();
-                    var category = await _categoryCollection.Find(cat => cat.Id == course.CategoryId).FirstOrDefaultAsync();
+                    //var author = await _authorCollection.Find(a => a.Id == course.AuthorId).FirstOrDefaultAsync();
+                    //var category = await _categoryCollection.Find(cat => cat.Id == course.CategoryId).FirstOrDefaultAsync();
 
                     result.Add(new CourseResponseDTO
                     {
@@ -228,8 +228,8 @@ namespace DevLearning.CourseAPI.Repositories
                         Featured = course.Featured,
                         AuthorId = course.AuthorId.ToString(),
                         CategoryId = course.CategoryId.ToString(),
-                        AuthorName = author?.Name,
-                        CategoryName = category?.Title,
+                        AuthorName = null,
+                        CategoryName = null,
                         Tags = course.Tags
                     });
                 }
@@ -257,8 +257,8 @@ namespace DevLearning.CourseAPI.Repositories
                 var result = new List<CourseResponseDTO>();
                 foreach (var course in courses)
                 {
-                    var author = await _authorCollection.Find(a => a.Id == course.AuthorId).FirstOrDefaultAsync();
-                    var category = await _categoryCollection.Find(cat => cat.Id == course.CategoryId).FirstOrDefaultAsync();
+                    //var author = await _authorCollection.Find(a => a.Id == course.AuthorId).FirstOrDefaultAsync();
+                    //var category = await _categoryCollection.Find(cat => cat.Id == course.CategoryId).FirstOrDefaultAsync();
 
                     result.Add(new CourseResponseDTO
                     {
@@ -276,8 +276,8 @@ namespace DevLearning.CourseAPI.Repositories
                         Featured = course.Featured,
                         AuthorId = course.AuthorId.ToString(),
                         CategoryId = course.CategoryId.ToString(),
-                        AuthorName = author?.Name,
-                        CategoryName = category?.Title,
+                        AuthorName = null,
+                        CategoryName = null,
                         Tags = course.Tags
                     });
                 }
