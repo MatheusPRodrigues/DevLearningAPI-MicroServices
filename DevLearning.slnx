@@ -1,3 +1,8 @@
 <Solution>
+  <Project Path="DevLearning.AuthorAPI/DevLearning.AuthorAPI.csproj" />
+  <Project Path="DevLearning.CareerAPI/DevLearning.CareerAPI.csproj" />
+  <Project Path="DevLearning.CategoryAPI/DevLearning.CategoryAPI.csproj" />
+  <Project Path="DevLearning.CourseAPI/DevLearning.CourseAPI.csproj" />
   <Project Path="DevLearning.Models/DevLearning.Models.csproj" />
+  <Project Path="DevLearning.StudentAPI/DevLearning.StudentAPI.csproj" />
 </Solution>
