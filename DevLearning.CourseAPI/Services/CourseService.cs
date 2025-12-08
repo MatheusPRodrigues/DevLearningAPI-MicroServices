@@ -1,8 +1,10 @@
-﻿using DevLearning.API.Models.DTOs.Course;
+﻿using DevLearning.API.Models.DTOs.Author;
+using DevLearning.API.Models.DTOs.Course;
 using DevLearning.CourseAPI.Repositories;
 using DevLearning.CourseAPI.Repositories.Interfaces;
 using DevLearning.CourseAPI.Services.Interfaces;
 using DevLearning.Models;
+using DevLearning.Models.DTOs.Category;
 using DevLearning.Models.DTOs.Course;
 using Microsoft.AspNetCore.Http.HttpResults;
 using MongoDB.Bson;
@@ -67,14 +69,25 @@ namespace DevLearning.CourseAPI.Services
 
         public async Task<List<CourseResponseDTO>> GetAllCoursesAsync(string category)
         {
-            try
+            var courses = await _courseRepository.GetAllCoursesAsync(category);
+
+            foreach (var c in courses)
             {
-                return await _courseRepository.GetAllCoursesAsync(category);
+                AuthorResponseDTO author = null;
+                var authorResp = await _authorClient.GetAsync($"{c.AuthorId}");
+                if (authorResp.IsSuccessStatusCode)
+                    author = await authorResp.Content.ReadFromJsonAsync<AuthorResponseDTO>();
+
+                CategoryResponseDTO categoryDto = null;
+                var categoryResp = await _categoryClient.GetAsync($"{c.CategoryId}");
+                if (categoryResp.IsSuccessStatusCode)
+                    categoryDto = await categoryResp.Content.ReadFromJsonAsync<CategoryResponseDTO>();
+
+                c.AuthorName = author?.Name;
+                c.CategoryName = categoryDto?.Title;
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+
+            return courses;
         }
 
         public async Task<CourseResponseDTO> GetOneCourseByTitleAsync(string title)
@@ -138,16 +151,50 @@ namespace DevLearning.CourseAPI.Services
 
         public async Task<List<CourseResponseDTO>> GetCoursesByCategoryAsync(Guid categoryId)
         {
-            if (categoryId == Guid.Empty)
-                throw new ArgumentException("ID da categoria inválido");
-            return await _courseRepository.GetCoursesByCategoryAsync(categoryId);
+            var courses = await _courseRepository.GetCoursesByCategoryAsync(categoryId);
+
+            foreach (var c in courses)
+            {
+                var authorResp = await _authorClient.GetAsync($"{c.AuthorId}");
+                if (authorResp.IsSuccessStatusCode)
+                {
+                    var author = await authorResp.Content.ReadFromJsonAsync<AuthorResponseDTO>();
+                    c.AuthorName = author?.Name;
+                }
+
+                var categoryResp = await _categoryClient.GetAsync($"{c.CategoryId}");
+                if (categoryResp.IsSuccessStatusCode)
+                {
+                    var category = await categoryResp.Content.ReadFromJsonAsync<CategoryResponseDTO>();
+                    c.CategoryName = category?.Title;
+                }
+            }
+
+            return courses;
         }
 
         public async Task<List<CourseResponseDTO>> GetCoursesByAuthorAsync(Guid authorId)
         {
-            if (authorId == Guid.Empty)
-                throw new ArgumentException("ID do autor inválido");
-            return await _courseRepository.GetCoursesByAuthorAsync(authorId);
+            var courses = await _courseRepository.GetCoursesByAuthorAsync(authorId);
+
+            foreach (var c in courses)
+            {
+                var authorResp = await _authorClient.GetAsync($"{c.AuthorId}");
+                if (authorResp.IsSuccessStatusCode)
+                {
+                    var author = await authorResp.Content.ReadFromJsonAsync<AuthorResponseDTO>();
+                    c.AuthorName = author?.Name;
+                }
+
+                var categoryResp = await _categoryClient.GetAsync($"{c.CategoryId}");
+                if (categoryResp.IsSuccessStatusCode)
+                {
+                    var category = await categoryResp.Content.ReadFromJsonAsync<CategoryResponseDTO>();
+                    c.CategoryName = category?.Title;
+                }
+            }
+
+            return courses;
         }
 
         public async Task UpdateCourseByTitleAsync(string title, CourseUpdateDTO update)
