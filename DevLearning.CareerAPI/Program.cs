@@ -15,21 +15,9 @@ builder.Services.AddSingleton<ConnectionDB>();
 builder.Services.AddSingleton<ICareerRepository, CareerRepository>();
 builder.Services.AddSingleton<ICareerItemRepository, CareerItemRepository>();
 
-//builder.Services.AddSingleton<ICareerService, CareerService>();
-//builder.Services.AddSingleton<ICareerItemService, CareerItemService>();
 
-builder.Services.AddHttpClient<CareerItemService>(client => client.BaseAddress = new Uri("https://localhost:5007/api/v1/Course/"));
-builder.Services.AddHttpClient<CareerService>(client => client.BaseAddress = new Uri("https://localhost:5007/api/v1/Course/"));
-
-// Recupera a URL configurada no appsettings.json
-/*var courseApiUrl = builder.Configuration["Microservices:CourseApi"];
-
-builder.Services.AddHttpClient("CourseApi", client =>
-{
-    client.BaseAddress = new Uri(courseApiUrl);
-    client.DefaultRequestHeaders.Add("Accept", "application/json");
-});*/
-
+builder.Services.AddHttpClient<ICareerItemService, CareerItemService>(client => client.BaseAddress = new Uri("https://localhost:5007/api/v1/Course/"));
+builder.Services.AddHttpClient<ICareerService, CareerService>(client => client.BaseAddress = new Uri("https://localhost:5007/api/v1/Course/"));
 
 var app = builder.Build();
 
@@ -43,5 +31,3 @@ app.MapControllers();
 
 app.Run();
 
-
-//

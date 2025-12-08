@@ -70,19 +70,8 @@ namespace DevLearning.CareerAPI.Service
                 logger.LogError(ex, $"Erro interno ao criar carreira e item carreira: {ex.Message}");
                 throw;
             }
-
-                    /*var careerItems = careerDTO.careerItems.Select(itemDTO => new CareerItem(
-                    career.Id,
-                    itemDTO.CourseId,
-                    itemDTO.Title,
-                    itemDTO.Description,
-                    itemDTO.Order
-                )).ToList();
-                foreach (var item in careerItems)
-                {
-                    career.AddItem(item);
-                }*/
         }
+
         public async Task<List<CareerWhitCareerItemResponseDTO>> GetAllCareerAsync()
         {
             try
@@ -230,7 +219,7 @@ namespace DevLearning.CareerAPI.Service
 
                     try
                     {
-                        var courseDto = await GetCourseFromExternalApi(item.CourseId);
+                        var courseDto = await GetCourseFromExternalApi(item.CourseId); 
 
                         if (courseDto != null)
                         {
@@ -245,7 +234,7 @@ namespace DevLearning.CareerAPI.Service
             }
         }
 
-        //metodo auxiliar para buscar o curso na API externa
+        //metodo aux para buscar o curso na API externa
         public async Task<APICourseDTO> GetCourseFromExternalApi(string courseId)
         {
             try

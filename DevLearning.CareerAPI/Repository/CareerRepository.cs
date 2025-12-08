@@ -72,7 +72,7 @@ namespace DevLearning.CareerAPI.Repository
             try
             {
                 var sql = @"SELECT 
-                            Id, Title, Summary, url, DurationInMinutes, Active, Featured, Tags
+                            Id, Title, Summary, url, DurationInMinutes, Active, Featured, Tags 
                             FROM Career";
 
                 var careers = (await connection.QueryAsync<CareerResponseDTO>(sql)).ToList();
@@ -225,10 +225,10 @@ namespace DevLearning.CareerAPI.Repository
                 ci.CourseId,
                 ci.Title,
                 ci.Description,
-                ci.[Order],
-            FROM Career c
-            LEFT JOIN CareerItem ci ON ci.CareerId = c.Id
-            ORDER BY c.Title, ci.[Order];";
+                ci.[Order]
+                FROM Career c
+                LEFT JOIN CareerItem ci ON ci.CareerId = c.Id
+                ORDER BY c.Title, ci.[Order];";
 
                 var careers = await connection.QueryAsync<CareerWhitCareerItemResponseDTO, CareerItemResponseDTO, 
                     CareerWhitCareerItemResponseDTO>( sql, (career, item) =>
