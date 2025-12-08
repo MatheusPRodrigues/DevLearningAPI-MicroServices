@@ -44,12 +44,15 @@ namespace DevLearning.CourseAPI.Controllers.v1
         }
 
         [HttpGet("get-by-title")]
-        public async Task<ActionResult<CourseResponseDTO>> GetOneCourseByTitleAsync([FromBody] CourseRequestTitleDTO course)
+        public async Task<ActionResult<CourseResponseDTO>> GetOneCourseByTitleAsync([FromBody] CourseRequestTitleDTO dto)
         {
             try
             {
-                var user = await _courseService.GetOneCourseByTitleAsync(course.Title);
-                return Ok(user);
+                var course = await _courseService.GetOneCourseByTitleAsync(dto);
+                if (course is null)
+                    return NotFound(new { message = "Curso não encontrado" });
+
+                return Ok(course);
             }
             catch (ArgumentException ex)
             {
