@@ -1,14 +1,15 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace DevLearning.StudentAPI.Data
+namespace DevLearning.AuthorAPI.DataBase
 {
     public class ConnectionDB
     {
+
         private readonly string _connectionString;
 
         public ConnectionDB(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("SqlConnection");
+            _connectionString = configuration.GetConnectionString("DefaultConnection2");
         }
 
         public SqlConnection GetConnection()
