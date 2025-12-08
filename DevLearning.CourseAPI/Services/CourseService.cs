@@ -94,7 +94,24 @@ namespace DevLearning.CourseAPI.Services
         {
             try
             {
-                return await _courseRepository.GetOneCourseByTitleAsync(dto.Title);
+                var course = await _courseRepository.GetOneCourseByTitleAsync(dto.Title);
+                if (course is null)
+                    return null;
+
+                AuthorResponseDTO author = null;
+                var authorResp = await _authorClient.GetAsync($"{course.AuthorId}");
+                if (authorResp.IsSuccessStatusCode)
+                    author = await authorResp.Content.ReadFromJsonAsync<AuthorResponseDTO>();
+
+                CategoryResponseDTO categoryDto = null;
+                var categoryResp = await _categoryClient.GetAsync($"{course.CategoryId}");
+                if (categoryResp.IsSuccessStatusCode)
+                    categoryDto = await categoryResp.Content.ReadFromJsonAsync<CategoryResponseDTO>();
+
+                course.AuthorName = author?.Name;
+                course.CategoryName = categoryDto?.Title;
+
+                return course;
             }
             catch (Exception ex)
             {
@@ -141,7 +158,24 @@ namespace DevLearning.CourseAPI.Services
         {
             try
             {
-                return await _courseRepository.GetOneCourseByIdAsync((id));
+                var course = await _courseRepository.GetOneCourseByIdAsync(id);
+                if (course is null)
+                    return null;
+
+                AuthorResponseDTO author = null;
+                var authorResp = await _authorClient.GetAsync($"{course.AuthorId}");
+                if (authorResp.IsSuccessStatusCode)
+                    author = await authorResp.Content.ReadFromJsonAsync<AuthorResponseDTO>();
+
+                CategoryResponseDTO categoryDto = null;
+                var categoryResp = await _categoryClient.GetAsync($"{course.CategoryId}");
+                if (categoryResp.IsSuccessStatusCode)
+                    categoryDto = await categoryResp.Content.ReadFromJsonAsync<CategoryResponseDTO>();
+
+                course.AuthorName = author?.Name;
+                course.CategoryName = categoryDto?.Title;
+
+                return course;
             }
             catch (Exception ex)
             {
